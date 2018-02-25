@@ -7,17 +7,15 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#include "line/line.cpp"
+#include "polygon/polygon.cpp"
 #include "utils/util.cpp"
 #include "utils/UserInput.h"
 
-bool flag = false;
-bool moveLeft = false;
-bool moveUp = false;
-bool moveRight = false;
-bool moveDown = false;
-bool zoomIn = false;
-bool zoomOut = false;
+Line mtop(100,100,1200,100);
+Line mright(1200,100,1200,600);
+Line mbottom(1200,600,100,600);
+Line mleft(100,600,100,100);
+Clip clip(mtop, mright, mbottom, mleft);
 
 int *** framebuffer;
 
@@ -29,76 +27,36 @@ int main() {
     // std::thread t1(call_from_thread1);
     UserInput input;
 
-    Line line(100,100,200,200);
+    Polygon test((char*)"objects/0.txt");
+    test.update(800,800);
+    test.scaleNew(0.2);
+    // Line line(100,100,200,200);
     // unsigned char input = '\0';
 
-    while(!flag){
+    while(1){
         // usleep(1000);
         framebuffer = Util::initFrameBuffer();
-        line.print(0,0,255,255,255,framebuffer);
+        test.print(0,0,255,255,255,clip,framebuffer);
         if(input.getKeyPress('q')){
             break;
         } else if(input.getKeyPress('a')) {
-            line.update(-10,0);
+            test.update(-10,0);
         } else if(input.getKeyPress('s')) {
-            line.update(0,10);
+            test.update(0,10);
         } else if(input.getKeyPress('d')){
-            line.update(10,0);
+            test.update(10,0);
         } else if(input.getKeyPress('w')) {
-            line.update(0,-10);
+            test.update(0,-10);
+        } else if(input.getKeyPress('o')) {
+            test.scale(1.2);
+        } else if(input.getKeyPress('p')) {
+            test.scale(0.8);
         }
 
-        // //cout << "hello" << endl;
-        // if(moveRight){
-        //     //printw("yo");
-        //     //line.update(10,0);
-        //     moveRight = false;
-        // } else 
-        // if(moveLeft){
-        //     //line.update(-10,0);
-        //     moveLeft = false;
-        // } else 
-        // if(moveDown){
-        //     //line.update(0,10);
-        //     moveDown = false;
-        // } else 
-        // if(moveUp){
-        //     //line.update(0,-10);
-        //     moveUp = false;
-        // }
-
-        // initscr();
-        // refresh();
-        // input = getch();
-        // //cin >> input;
-        // //usleep(10000);
-        // if(input == 27) { // Escape for break
-        //     //printw("this is escape");
-        //     flag = true;
-        //     break;
-        // } else
-        // if(input == 119) { // move up
-        //     //printw("w");
-        //     moveUp = true;
-        // } else
-        // if(input == 97) { // move left
-        //     //printw("a");
-        //     moveLeft = true;
-        // } else 
-        // if(input == 115) { // move down
-        //     //printw("s");
-        //     moveDown = true;
-        // } else
-        // if(input == 100) { // move right
-        //     //printw("d");
-        //     moveRight = true;
-        // }
-        // endwin();
-
         Util::printScreen(framebuffer);
-        //free(framebuffer);
+        
     }
-
+    free(framebuffer);
     // t1.join();
 
     return 0;

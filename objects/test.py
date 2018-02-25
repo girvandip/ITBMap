@@ -23,23 +23,30 @@ for i in range(len(path_strings)):
     
     x = float(line[1])
     y = float(line[2])
-
+    tempx = float(line[1])
+    tempy = float(line[2])
+    line = list(map(float, line))
+    # print line
     for i in range(len(line)) :
         if (line[i] != ' '):
             if (i > 2) :
                 if (i % 2 == 1) :
-                    line[i] = x + float(line[i])
+                    line[i] = float(tempx) + float(line[i])
+                    tempx = float(line[i])
                 else :
-                    line[i] = y + float(line[i])
-
+                    line[i] = float(tempy) + float(line[i])
+                    tempy = float(line[i])
+                    
     maksx = float(line[1])
     minx = float(line[1])
     maksy = float(line[2])
     miny = float(line[2])    
+    line = list(map(str, line))
+
     for i in range(len(line)) :
         if (i == 0) :
-            print line[i]
-            file.write(line[i])
+            print int(round(float(line[i])))
+            file.write(str(int(round(float(line[i])))))
             file.write('\n')
         elif ( i < len(line) - 2) :
             if ( i % 2 == 1) :
