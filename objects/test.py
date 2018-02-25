@@ -6,6 +6,8 @@ path_strings = [path.getAttribute('d') for path
 
 for i in range(len(path_strings)):
 
+    file = open(str(i)+".txt","w")
+
     path_strings[i] = path_strings[i].replace(',',' ')
     b = path_strings[i].count(' ')
     path_strings[i] = path_strings[i].replace('m',str(b)+' ')
@@ -37,6 +39,8 @@ for i in range(len(path_strings)):
     for i in range(len(line)) :
         if (i == 0) :
             print line[i]
+            file.write(line[i])
+            file.write('\n')
         elif ( i < len(line) - 2) :
             if ( i % 2 == 1) :
                 print int(round(float(line[i]))),
@@ -46,7 +50,15 @@ for i in range(len(path_strings)):
                 print int(round(float(line[i+2]))),
                 print ' ',
                 print int(round(float(line[i+3])))
-
+                
+                file.write(str(int(round(float(line[i]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[i+1]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[i+2]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[i+3])))))
+                file.write('\n')
         elif ( i == len(line) - 2) :
                 print int(round(float(line[i]))),
                 print ' ',
@@ -55,6 +67,15 @@ for i in range(len(path_strings)):
                 print int(round(float(line[1]))),
                 print ' ',
                 print int(round(float(line[2])))
+
+                file.write(str(int(round(float(line[i]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[i+1]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[1]))),))
+                file.write( ' ',)
+                file.write(str(int(round(float(line[2])))))
+                file.write('\n')
         if (i != 0 ) :
             if (i % 2 == 1) :
                 if (maksx < float(line[i])) :
@@ -75,3 +96,12 @@ for i in range(len(path_strings)):
     print ' ',
     print int(round(maksy))
     print '\n'
+
+    file.write(str(int(round(minx)),))
+    file.write( ' ',)
+    file.write(str(int(round(miny))))
+    file.write('\n')
+    file.write(str(int(round(maksx)),))
+    file.write( ' ',)
+    file.write(str(int(round(maksy))))
+    file.close()
