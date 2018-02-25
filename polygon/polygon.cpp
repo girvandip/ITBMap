@@ -255,6 +255,14 @@ class Polygon {
             }
         }
 
+        void scaleNew(float scale) {
+            topLeft.scaleNew(scale);
+            bottomRight.scaleNew(scale);
+            for(int i = 0;i < lines.size();i++) {
+                lines[i].scaleNew(scale);
+            }
+        }
+
         void update(int x, int y) {
             topLeft.update(x, y);
             bottomRight.update(x, y);

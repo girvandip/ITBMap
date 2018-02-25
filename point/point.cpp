@@ -81,6 +81,11 @@ class Point {
             setAxis(finalx);
             setOrdinat(finaly);
         }
+        
+        void scaleNew(float scale) {
+            setAxis(scale * getAxis());
+            setOrdinat(scale * getOrdinat());
+        }
 
         void scale(float scale, int topLeftX, int topLeftY, int bottomRightX, int bottomRightY) {
             float centerX = ((topLeftX + bottomRightX) / 2);

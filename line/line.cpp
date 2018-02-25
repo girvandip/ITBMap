@@ -166,6 +166,11 @@ class Line {
             p2.scaleByPoint(scale, P);
         }
 
+        void scaleNew(float scale) {
+            p1.scaleNew(scale);
+            p2.scaleNew(scale);
+        }
+
 		
         void move(int h, int v, Point topLeft, Point bottomRight) {
 			p1.move(h,v,topLeft.getAxis(), topLeft.getOrdinat(), bottomRight.getAxis(), bottomRight.getOrdinat());
