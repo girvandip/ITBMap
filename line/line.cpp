@@ -70,8 +70,8 @@ class Line {
 
         void print(int divx, int divy, int r, int g, int b, int*** buffer){
             int fbfd = 0;
-            struct fb_var_screeninfo vinfo;
-            struct fb_fix_screeninfo finfo;
+            //struct fb_var_screeninfo vinfo;
+            //struct fb_fix_screeninfo finfo;
             long int screensize = 0;
             char *fbp = 0;
             int x = 0, y = 0, timer = 0;
@@ -147,8 +147,8 @@ class Line {
                 if (e2 < dy) { err += dx; y0 += sy; }
             }
 
-            munmap(fbp, screensize);
-            close(fbfd);
+            // munmap(fbp, screensize);
+            // close(fbfd);
         }
 
         void rotate(float degree, Point topLeft, Point bottomRight) {
