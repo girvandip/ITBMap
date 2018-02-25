@@ -29,19 +29,49 @@ for i in range(len(path_strings)):
                     line[i] = x + float(line[i])
                 else :
                     line[i] = y + float(line[i])
-        
+
+    maksx = float(line[1])
+    minx = float(line[1])
+    maksy = float(line[2])
+    miny = float(line[2])    
     for i in range(len(line)) :
         if (i == 0) :
             print line[i]
-        elif ( i < len(line)-2) :
-            if (i % 4 == 1 or i % 4 == 2) :
-                print line[i],
-            elif ( i % 4 == 3) :
-                print line[i],
-                print line[i+1]
-                print line[i],
-                print line[i+1],
-            else :
-                print line[i]
-                print '\n'
+        elif ( i < len(line) - 2) :
+            if ( i % 2 == 1) :
+                print int(round(float(line[i]))),
+                print ' ',
+                print int(round(float(line[i+1]))),
+                print ' ',
+                print int(round(float(line[i+2]))),
+                print ' ',
+                print int(round(float(line[i+3])))
 
+        elif ( i == len(line) - 2) :
+                print int(round(float(line[i]))),
+                print ' ',
+                print int(round(float(line[i+1]))),
+                print ' ',
+                print int(round(float(line[1]))),
+                print ' ',
+                print int(round(float(line[2])))
+        if (i != 0 ) :
+            if (i % 2 == 1) :
+                if (maksx < float(line[i])) :
+                    maksx = float(line[i])
+                if (minx > float(line[i])) :
+                    minx = float(line[i])
+            else :
+                if (maksy < float(line[i])) :
+                    maksy = float(line[i])
+                if (miny > float(line[i])) :
+                    miny = float(line[i])
+
+    
+    print int(round(minx)),
+    print ' ',
+    print int(round(miny))
+    print int(round(maksx)),
+    print ' ',
+    print int(round(maksy))
+    print '\n'
