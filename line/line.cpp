@@ -176,6 +176,24 @@ class Line {
             p1.update(x, y);
             p2.update(x, y);
         }
+
+        void setFirstAxis(int x){
+            p1.setAxis(x);
+            
+        }
+
+        void setSecondAxis(int x){
+            p2.setAxis(x);
+        }
+
+        void setFirstOrdinat(int y){
+            p1.setOrdinat(y);
+            
+        }
+
+        void setSecondOrdinat(int y){
+            p2.setOrdinat(y);
+        }
         
 
     private:

@@ -50,6 +50,12 @@ class Polygon {
             bottomRight.setOrdinat(y1);
         }
 
+        Polygon (const Polygon& p){
+            this->topLeft = p.topLeft;
+            this->bottomRight= p.bottomRight;
+            this->lines = p.lines;
+        }
+
         void print(int divx, int divy, int red, int green, int blue, Clip clip, int*** buffer) {
             for(int i = 0; i < lines.size(); i++){
                 Line temp(
@@ -63,11 +69,34 @@ class Polygon {
             }
         }
 
+        void printNoCLip(int divx, int divy, int red, int green, int blue, int*** buffer) {
+            for(int i = 0; i < lines.size(); i++){
+                Line temp(
+                    lines[i].getFirstPoint().getAxis(),
+                    lines[i].getFirstPoint().getOrdinat(),
+                    lines[i].getSecondPoint().getAxis(),
+                    lines[i].getSecondPoint().getOrdinat()
+                );
+            temp.print(divx, divy, red, green, blue, buffer);
+            }
+        }
+
         Point getTopLeft() {
             return topLeft;
         }
         Point getBottomRight() {
             return bottomRight;
+        }
+
+        void setTopLeft(Point x){
+            this->topLeft = x;
+        }
+
+        void setBottomRight(Point y){
+            this->bottomRight = y;
+        }
+        void addLine(Line L){
+            lines.push_back(L);
         }
 
         // TODO: make line dependent scan line
@@ -154,6 +183,92 @@ class Polygon {
                             // } 
                             if(print)
                                 line.print(0,0, red, green, blue, buffer);
+
+                            i++;
+                            //if(scan == 501) cout << "kelar" << endl;
+                            
+                        }
+                    }
+                }
+
+                scanLineY++;
+            }
+        }
+
+         void scanLineNoClip(int red, int green, int blue, int*** buffer) {
+            // make the scan line
+            int scanLineY = topLeft.getOrdinat(); // Represent Y = c
+            
+            for(int scan = topLeft.getOrdinat(); scan < bottomRight.getOrdinat(); scan++){
+                // list of points
+                vector<Point> listOfIntersectPoints;
+
+                for(int i = 0; i < lines.size(); i++){
+                    // First, check if the point intersect
+                    int firstOrdinatPolygon = lines[i].getFirstPoint().getOrdinat();
+                    int secondOrdinatPolygon = lines[i].getSecondPoint().getOrdinat();
+
+                    if((scanLineY - firstOrdinatPolygon)*(scanLineY - secondOrdinatPolygon) <= 0){
+                        // find the intersect
+                        pair<float, float> tempEQ = lines[i].makeLine();
+
+                        if(tempEQ.first == 0){
+                            Point tempPoint(lines[i].getFirstPoint().getAxis(), scanLineY);
+                            listOfIntersectPoints.push_back(tempPoint);
+                        } else {
+                            float x = (scanLineY - tempEQ.second) / tempEQ.first;
+                            // float y = linearEQ.first * x + linearEQ.second;
+                            Point tempPoint(x, scanLineY);
+                            listOfIntersectPoints.push_back(tempPoint);
+                        }
+                    }
+
+                    // check if it has a corner
+                    for(int j = i + 1; j < lines.size(); j++){
+                        if(isCorner(lines[i], lines[j], scanLineY)){
+                            // add another point
+                            pair<float, float> tempEQ = lines[i].makeLine();
+
+                            if(tempEQ.first == 0){
+                                Point tempPoint(lines[i].getFirstPoint().getAxis(), scanLineY);
+                                listOfIntersectPoints.push_back(tempPoint);
+                            } else {
+                                float x = (scanLineY - tempEQ.second) / tempEQ.first;
+                                Point tempPoint(x, scanLineY);
+                                listOfIntersectPoints.push_back(tempPoint);
+                            }
+                        }
+                    }
+                }
+
+                // sort the points
+                if(listOfIntersectPoints.size() != 0){
+                    for(int i = 0; i < listOfIntersectPoints.size() - 1; i++) {
+                        int smallest = i;
+                        for(int j = i+1; j < listOfIntersectPoints.size(); j++){
+                            if(listOfIntersectPoints[j].getAxis() < listOfIntersectPoints[smallest].getAxis()){
+                                smallest = j;
+                            }
+                        }
+                        Point temp(listOfIntersectPoints[smallest].getAxis(), listOfIntersectPoints[smallest].getOrdinat());
+                        listOfIntersectPoints[smallest] = listOfIntersectPoints[i];
+                        listOfIntersectPoints[i] = temp;
+                    }
+
+                    // only color if total point is more than one
+                    if(listOfIntersectPoints.size() > 1){
+                        // check if the count is odd
+                        int count = (listOfIntersectPoints.size() % 2 == 1) ?
+                            (listOfIntersectPoints.size() - 1) : listOfIntersectPoints.size();
+
+                        for(int i = 0; i < count; i++) {
+                            // don't color the border
+                            listOfIntersectPoints[i].setAxis(listOfIntersectPoints[i].getAxis()+1);
+                            listOfIntersectPoints[i+1].setAxis(listOfIntersectPoints[i+1].getAxis()-1);
+                            
+                            Line line(listOfIntersectPoints[i], listOfIntersectPoints[i+1]);
+                            
+                            line.print(0,0, red, green, blue, buffer);
 
                             i++;
                             //if(scan == 501) cout << "kelar" << endl;
@@ -342,6 +457,12 @@ class Polygon {
             }
         }
     }
+
+    vector<Line> getLines(){
+
+        return this->lines;
+    }
+
     private:
         vector<Line> lines;
         Point topLeft, bottomRight;

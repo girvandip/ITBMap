@@ -30,12 +30,39 @@ class Clip {
             this->rightBorder.setSecondPoint(rightBorder.getSecondPoint());
         }
 
+        Clip(Point topLeft, Point bottomRight){
+            int x = bottomRight.getAxis() - topLeft.getAxis();
+            int y = bottomRight.getOrdinat() - topLeft.getOrdinat();
+
+            Point upperRight(bottomRight.getAxis(),topLeft.getOrdinat());
+            Point downLeft(topLeft.getAxis(),bottomRight.getOrdinat());
+
+            this->topBorder.setFirstPoint(topLeft);
+            this->topBorder.setSecondPoint(upperRight);
+            
+            this->bottomBorder.setFirstPoint(bottomRight);
+            this->bottomBorder.setSecondPoint(downLeft);
+            
+            this->leftBorder.setFirstPoint(downLeft);
+            this->leftBorder.setSecondPoint(topLeft);
+            
+            this->rightBorder.setFirstPoint(upperRight);
+            this->rightBorder.setSecondPoint(bottomRight);
+
+
+        }
+
+        
+
         void drawClipBorder(int divx, int divy, int r, int g, int b, int *** buffer) {
             topBorder.print(divx, divy, r, g, b, buffer);
             bottomBorder.print(divx, divy, r, g, b, buffer);
             leftBorder.print(divx, divy, r, g, b, buffer);
             rightBorder.print(divx, divy, r, g, b, buffer);
         }
+
+            
+        
 
         void setCodeForPoint(Point &p){
             if(p.getOrdinat() < topBorder.getFirstPoint().getOrdinat()){
@@ -174,6 +201,31 @@ class Clip {
 
                 return true;
             }
+        }
+
+        Line getTopBorder() {
+            return this->topBorder;
+        }
+
+
+        Line getRightBorder() {
+            return this->rightBorder;
+        }
+
+        Line getBottomBorder() {
+            return this->bottomBorder;
+        }
+
+        Line getLeftBorder() {
+            return this->leftBorder;
+        }
+
+        Point getTopLeft() {
+            return topBorder.getFirstPoint();
+        }
+        
+        Point getBottomRight() {
+            return rightBorder.getSecondPoint();
         }
 
     private:

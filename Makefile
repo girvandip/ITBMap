@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=--std=c++11
 default:
-	@$(CC) -o main.exe main.cpp point/point.cpp line/line.cpp polygon/polygon.cpp clipping/clip.cpp utils/util.cpp $(CFLAGS)
+	@$(CC) -o suther.exe sutherland-test.cpp point/point.cpp line/line.cpp polygon/polygon.cpp clipping/clip.cpp utils/util.cpp $(CFLAGS)
 run:
-	@./main.exe
+	@./suther.exe

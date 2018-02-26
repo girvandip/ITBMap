@@ -24,6 +24,12 @@ class Point {
             for(int i = 0; i < 4; i++) this->code[i] = p.code[i];
         }
 
+        Point operator=(const Point& p){
+            this->x = p.x;
+            this->y = p.y;
+            return *this;
+        }
+
         int getAxis() {
             return this->x;
         }
