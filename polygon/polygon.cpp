@@ -50,10 +50,31 @@ class Polygon {
             bottomRight.setOrdinat(y1);
         }
 
-        Polygon (const Polygon& p){
-            this->topLeft = p.topLeft;
-            this->bottomRight= p.bottomRight;
-            this->lines = p.lines;
+        Polygon(string fileName) {
+            FILE *file;
+            file = fopen(fileName.c_str(), "r");
+
+            int x1, y1, x2, y2;
+            int numberOfLines;
+            fscanf(file, "%d", &numberOfLines);
+
+            for(int i = 0; i < numberOfLines; i++){
+
+                fscanf(file, "%d %d %d %d", &x1, &y1, &x2, &y2);
+
+                Point p1(x1, y1);
+                Point p2(x2, y2);
+                Line temp(p1, p2);
+                lines.push_back(temp);
+            }
+
+            // get the max point
+            fscanf(file, "%d %d", &x1, &y1);
+            topLeft.setAxis(x1);
+            topLeft.setOrdinat(y1);
+            fscanf(file, "%d %d", &x1, &y1);
+            bottomRight.setAxis(x1);
+            bottomRight.setOrdinat(y1);
         }
 
         void print(int divx, int divy, int red, int green, int blue, Clip clip, int*** buffer) {
@@ -367,6 +388,14 @@ class Polygon {
             bottomRight.scaleByPoint(scale, P);
             for(int i = 0;i < lines.size();i++) {
                 lines[i].scaleByPoint(scale, P);
+            }
+        }
+
+        void scaleNew(float scale) {
+            topLeft.scaleNew(scale);
+            bottomRight.scaleNew(scale);
+            for(int i = 0;i < lines.size();i++) {
+                lines[i].scaleNew(scale);
             }
         }
 
