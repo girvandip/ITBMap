@@ -167,7 +167,7 @@ class SClip {
 
                     X.setTopLeft(newTopLeft);
                     X.setBottomRight(newBottomRight);
-                    cout <<"FOUND"<<endl;
+                    //cout <<"FOUND"<<endl;
                     for (int k = 0 ; k < test.getLines().size(); ++k) {
                         
                         Point P1((test.getLines()[k].getFirstPoint().getAxis()*Sx)+tX,

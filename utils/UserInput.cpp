@@ -61,6 +61,6 @@ void UserInput::inputHandler() {
                 keyStates[c] = true;
             }
         }
-        usleep(1);
+        usleep(5);
     }
 }
