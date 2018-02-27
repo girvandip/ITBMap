@@ -35,16 +35,17 @@ class SClip {
         }
 
         void zoomIn(){
-            updatePoint(this->topLeft,10,10);
-            updatePoint(this->bottomRight,-10,-10);
-
+            topLeft.setAxis(topLeft.getAxis() + 10);
+            topLeft.setOrdinat(topLeft.getOrdinat() + 10);
+            bottomRight.setAxis(bottomRight.getAxis() - 10);
+            bottomRight.setOrdinat(bottomRight.getOrdinat() - 10);
         }
 
         void zoomOut(){
-
-            updatePoint(this->topLeft,-10,-10);
-            updatePoint(this->bottomRight,10,10);
-            
+            topLeft.setAxis(topLeft.getAxis() - 10);
+            topLeft.setOrdinat(topLeft.getOrdinat() - 10);
+            bottomRight.setAxis(bottomRight.getAxis() + 10);
+            bottomRight.setOrdinat(bottomRight.getOrdinat() + 10);
         }
 
         int isVisible(Point p1,Point p2) 
@@ -186,7 +187,7 @@ class SClip {
             }
 
             for (int i = 0 ; i < inClip.size(); ++ i){
-                inClip[i].update(0,lClip.getTopLeft().getOrdinat()*Sy);
+                // inClip[i].update(0,lClip.getTopLeft().getOrdinat()*Sy);
                 inClip[i].print(0,0,255,255,255,lClip,framebuffer);
                 inClip[i].scanLine(255,255,255,lClip,framebuffer);
             }

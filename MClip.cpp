@@ -28,7 +28,7 @@ class MClip {
         void printObjects(int ***framebuffer,int dx, int dy,int r, int g, int b){
             
             for (int i = 0 ; i< objects.size() ; ++i){
-                objects[i].update(topLeft.getAxis(),topLeft.getOrdinat());
+                //objects[i].update(topLeft.getAxis(),topLeft.getOrdinat());
                 objects[i].printNoCLip(dx,dy,r,g,b,framebuffer);
                 objects[i].scanLineNoClip(r,g,b,framebuffer);
             }

@@ -10,19 +10,34 @@ int main() {
     UserInput input;
 
     vector<Polygon> objects;
-    Polygon a((char*)"objects/plane.txt");
-    objects.push_back(a);
+    string result;
+    for(int i = 2;i < 82;i++) {
+        result = "objects/" + std::to_string(i) + ".txt";
+        Polygon obj (result);
+        obj.update(0,50);
+        objects.push_back(obj);
+    }
+    // Polygon a((char*)"objects/plane.txt");
+    // objects.push_back(a);
     Point A(10,20);
-    Point B(310,320);
+    Point B(410,500);
+
+    Point X(100,190);
+    Point Y(480,640);
+
+    // Point C(170,230);
+    // Point D(245,300);
 
     Point C(80,60);
-    Point D(155,130);
+    Point D(150,130);
 
-    Point E(320,20);
-    Point F(920,620);
+    Point E(520,20);
+    Point F(1220,720);
 
     Clip Lclip(E,F);
     SClip sClip(C,D,Lclip);
+
+    MClip mClip(A,B,objects);
 
     while(1){
         if(input.getKeyPress('q')){
@@ -47,13 +62,22 @@ int main() {
             D.update(0,-10);
             sClip.setTopLeft(C);
             sClip.setBottomRight(D);
+        } else if(input.getKeyPress('z')){
+            C.update(10,10);
+            D.update(-10,-10);
+            sClip.setTopLeft(C);
+            sClip.setBottomRight(D);
+        } else if(input.getKeyPress('x')){
+            C.update(-10,-10);
+            D.update(10,10);
+            sClip.setTopLeft(C);
+            sClip.setBottomRight(D);
         }
 
         int *** frameBufferArray = Util::initFrameBuffer();
 
         // Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
-
-        MClip mClip(A,B,objects);
+        
         
         sClip.render(mClip,frameBufferArray, 255,255,255);
 
