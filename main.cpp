@@ -20,12 +20,6 @@ int main() {
     Point A(10,20);
     Point B(410,500);
 
-    Point X(100,190);
-    Point Y(480,640);
-
-    // Point C(170,230);
-    // Point D(245,300);
-
     Point C(80,60);
     Point D(150,130);
 
@@ -39,6 +33,8 @@ int main() {
     int *** frameBufferArray = Util::initFrameBuffer();
 
     while(1){
+        
+        //clear the buffer before print it
         Util::clearFrameBuffer(frameBufferArray);
         if(input.getKeyPress('q')){
             break;
@@ -76,9 +72,7 @@ int main() {
             }
         }
         
-
         Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
-        
         
         sClip.render(mClip,frameBufferArray, 255,255,255);
 
