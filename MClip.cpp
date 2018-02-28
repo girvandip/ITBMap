@@ -26,11 +26,24 @@ class MClip {
 
 
         void printObjects(int ***framebuffer,int dx, int dy,int r, int g, int b){
-            
+
             for (int i = 0 ; i< objects.size() ; ++i){
                 //objects[i].update(topLeft.getAxis(),topLeft.getOrdinat());
-                objects[i].printNoCLip(dx,dy,r,g,b,framebuffer);
-                objects[i].scanLineNoClip(r,g,b,framebuffer);
+                // objects[i].printNoCLip(dx,dy,r,g,b,framebuffer);
+                // objects[i].scanLineNoClip(r,g,b,framebuffer);
+                if(i >= 0 && i <= 10) {
+                    objects[i].printNoCLip(0,0,200,0,135,framebuffer);
+                    objects[i].scanLineNoClip(200,0,135,framebuffer);
+                } else if(i >= 11 && i <= 20) {
+                    objects[i].printNoCLip(0,0,0,234,124,framebuffer);
+                    objects[i].scanLineNoClip(0,234,124,framebuffer);
+                } else if (i >= 21 && i <= 50){
+                    objects[i].printNoCLip(0,0,0,0,255,framebuffer);
+                    objects[i].scanLineNoClip(0,0,255,framebuffer);
+                } else {
+                    objects[i].printNoCLip(0,0,255,255,255,framebuffer);
+                    objects[i].scanLineNoClip(255,255,255,framebuffer);
+                }
             }
         }
 

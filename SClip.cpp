@@ -143,6 +143,9 @@ class SClip {
                 (bottomRight.getOrdinat()-topLeft.getOrdinat()));
 
             vector<Polygon> inClip;
+            vector<int> red;
+            vector<int> green;
+            vector<int> blue;
 
 
             for (int i = 0 ; i < mClip.getObjects().size(); ++i){
@@ -183,13 +186,29 @@ class SClip {
                         
                     }
                     inClip.push_back(X);
+                    if(i >= 0 && i <= 10) {
+                        red.push_back(200);
+                        green.push_back(0);
+                        blue.push_back(135);
+                    } else if(i >= 11 && i <= 20) {
+                        red.push_back(0);
+                        green.push_back(234);
+                        blue.push_back(124);
+                    } else if (i >= 21 && i <= 50) {
+                        red.push_back(0);
+                        green.push_back(0);
+                        blue.push_back(255);
+                    } else {
+                        red.push_back(255);
+                        green.push_back(255);
+                        blue.push_back(255);
+                    }
                 }
             }
 
             for (int i = 0 ; i < inClip.size(); ++ i){
-                // inClip[i].update(0,lClip.getTopLeft().getOrdinat()*Sy);
-                inClip[i].print(0,0,255,255,255,lClip,framebuffer);
-                inClip[i].scanLine(255,255,255,lClip,framebuffer);
+                inClip[i].print(0,0,red[i],green[i],blue[i],lClip,framebuffer);
+                inClip[i].scanLine(red[i],green[i],blue[i],lClip,framebuffer);
             }
 
             mClip.printObjects(framebuffer,0,0,255,255,255);
@@ -199,13 +218,6 @@ class SClip {
             lClip.drawClipBorder(0,0,255,255,255,framebuffer);
 
             this->drawClipBorder(0,0,255,0,0,framebuffer);
-
-
-            
-
-            
-
-
 
         }
 
