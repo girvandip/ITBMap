@@ -28,7 +28,7 @@ class Polygon {
             file = fopen(fileName, "r");
 
             int x1, y1, x2, y2;
-            int color;
+            int categori;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -51,8 +51,8 @@ class Polygon {
             bottomRight.setOrdinat(y1);
 
 
-            fscanf(file, "%d", &color);
-            setColor(color);
+            fscanf(file, "%d", &categori);
+            setColor(categori);
         }
 
         Polygon(string fileName) {
@@ -60,7 +60,7 @@ class Polygon {
             file = fopen(fileName.c_str(), "r");
 
             int x1, y1, x2, y2;
-            int color;
+            int categori;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -82,8 +82,8 @@ class Polygon {
             bottomRight.setAxis(x1);
             bottomRight.setOrdinat(y1);
 
-            fscanf(file, "%d", &color);
-            setColor(color);
+            fscanf(file, "%d", &categori);
+            setColor(categori);
 
         }
 
@@ -140,8 +140,8 @@ class Polygon {
             this->bottomRight = y;
         }
 
-        void setColor(int c) {
-            switch(c) {
+        void setColor(int categori) {
+            switch(categori) {
                 case 1 :
                     setRed(0);
                     setGreen(255);
@@ -469,7 +469,6 @@ class Polygon {
         vector<Line> lines;
         Point topLeft, bottomRight;
         int red,green,blue;
-        int c;
 };
 
 #endif

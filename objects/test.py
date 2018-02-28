@@ -104,6 +104,7 @@ for i in range(len(path_strings)):
     print int(round(maksy))
     print '\n'
 
+    #bottom right and top left Point
     file.write(str(int(round(minx)),))
     file.write( ' ',)
     file.write(str(int(round(miny))))
@@ -112,6 +113,8 @@ for i in range(len(path_strings)):
     file.write( ' ',)
     file.write(str(int(round(maksy))))
     file.write('\n')
+
+    #Type of Objects 
     if (i % 3 == 0) :
         file.write("1")
     elif (i % 3 == 2) :
