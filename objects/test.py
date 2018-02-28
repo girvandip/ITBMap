@@ -1,6 +1,6 @@
 from xml.dom import minidom
 
-doc = minidom.parse("peta_itb.svg")  # parseString also exists
+doc = minidom.parse("peta_itb_pohon.svg")  # parseString also exists
 path_strings = [path.getAttribute('d') for path
                 in doc.getElementsByTagName('path')]
 
@@ -15,12 +15,12 @@ for i in range(len(path_strings)):
     path_strings[i] = path_strings[i].replace('z', ' ')
     line = str(path_strings[i])
     line = line.split(" ")
-     
-    while ' ' in line : 
+
+    while ' ' in line :
          line.remove(' ')
     while '' in line :
         line.remove('')
-    
+
     x = float(line[1])
     y = float(line[2])
     tempx = float(line[1])
@@ -36,11 +36,11 @@ for i in range(len(path_strings)):
                 else :
                     line[i] = float(tempy) + float(line[i])
                     tempy = float(line[i])
-                    
+
     maksx = float(line[1])
     minx = float(line[1])
     maksy = float(line[2])
-    miny = float(line[2])    
+    miny = float(line[2])
     line = list(map(str, line))
 
     for i in range(len(line)) :
@@ -57,7 +57,7 @@ for i in range(len(path_strings)):
                 print int(round(float(line[i+2]))),
                 print ' ',
                 print int(round(float(line[i+3])))
-                
+
                 file.write(str(int(round(float(line[i]))),))
                 file.write( ' ',)
                 file.write(str(int(round(float(line[i+1]))),))
@@ -95,7 +95,7 @@ for i in range(len(path_strings)):
                 if (miny > float(line[i])) :
                     miny = float(line[i])
 
-    
+
     print int(round(minx)),
     print ' ',
     print int(round(miny))
