@@ -28,6 +28,7 @@ class Polygon {
             file = fopen(fileName, "r");
 
             int x1, y1, x2, y2;
+            int color;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -48,6 +49,10 @@ class Polygon {
             fscanf(file, "%d %d", &x1, &y1);
             bottomRight.setAxis(x1);
             bottomRight.setOrdinat(y1);
+
+
+            fscanf(file, "%d", &color);
+            setColor(color);
         }
 
         Polygon(string fileName) {
@@ -55,6 +60,7 @@ class Polygon {
             file = fopen(fileName.c_str(), "r");
 
             int x1, y1, x2, y2;
+            int color;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -75,6 +81,10 @@ class Polygon {
             fscanf(file, "%d %d", &x1, &y1);
             bottomRight.setAxis(x1);
             bottomRight.setOrdinat(y1);
+
+            fscanf(file, "%d", &color);
+            setColor(color);
+
         }
 
         void print(int divx, int divy, int red, int green, int blue, Clip clip, int*** buffer) {
@@ -109,6 +119,19 @@ class Polygon {
             return bottomRight;
         }
 
+        int getRed() {
+            return this->red;
+        }
+
+        int getGreen() {
+            return this->green;
+        }
+
+        int getBlue() {
+            return this->blue;
+        }
+
+
         void setTopLeft(Point x){
             this->topLeft = x;
         }
@@ -116,6 +139,45 @@ class Polygon {
         void setBottomRight(Point y){
             this->bottomRight = y;
         }
+
+        void setColor(int c) {
+            switch(c) {
+                case 1 :
+                    setRed(0);
+                    setGreen(255);
+                    setBlue(0);
+                    break;
+                case 2 :
+                    setRed(255);
+                    setGreen(255);
+                    setBlue(0);
+                    break;
+                case 3 :
+                    setRed(200);
+                    setGreen(255);
+                    setBlue(0);
+                    break;
+                default :
+                    red = 255;
+                    green = 255;
+                    blue = 255;
+                    break;
+
+            }
+
+        }
+        void setRed(int red) {
+            this->red = red;
+        }
+
+        void setGreen(int green) {
+            this->green = green;
+        }
+
+        void setBlue(int blue) {
+            this->blue = blue;
+        }
+
         void addLine(Line L){
             lines.push_back(L);
         }
@@ -193,20 +255,11 @@ class Polygon {
                             listOfIntersectPoints[i+1].setAxis(listOfIntersectPoints[i+1].getAxis()-1);
                             
                             Line line(listOfIntersectPoints[i], listOfIntersectPoints[i+1]);
-                            //cout << "lama :" << line.getFirstPoint().getAxis() << " " << line.getSecondPoint().getOrdinat() << " ";
-                            //if(scan == 501) cout << "yo nyampe" << endl;
                             bool print = clipBorder.clipLine(line);
-                            //cout << "baru: " << line.getFirstPoint().getAxis() << " " << line.getSecondPoint().getOrdinat() << " ";
-                            // if(scan == 501){
-                            //     cout << "sudah dapet print " << print << endl;
-                            //     cout << line.getFirstPoint().getAxis() << " " << line.getFirstPoint().getOrdinat() << " "
-                            //         << line.getSecondPoint().getAxis() << " " << line.getSecondPoint().getOrdinat() << endl;
-                            // } 
                             if(print)
                                 line.print(0,0, red, green, blue, buffer);
 
                             i++;
-                            //if(scan == 501) cout << "kelar" << endl;
                             
                         }
                     }
@@ -292,7 +345,6 @@ class Polygon {
                             line.print(0,0, red, green, blue, buffer);
 
                             i++;
-                            //if(scan == 501) cout << "kelar" << endl;
                             
                         }
                     }
@@ -301,40 +353,6 @@ class Polygon {
                 scanLineY++;
             }
         }
-
-        void fall(){
-			int minX = topLeft.getAxis(),
-                minY = topLeft.getOrdinat(),
-                maxX = bottomRight.getAxis(),
-                maxY = bottomRight.getOrdinat();
-
-			for(int i = 0;i < lines.size();i++) {
-                lines[i].move(0,1, topLeft, bottomRight);
-            }
-            topLeft.setAxis(minX);
-            topLeft.setOrdinat(minY+1);
-            bottomRight.setAxis(maxX);
-            bottomRight.setOrdinat(maxY+1);
-
-
-		}
-
-		void up(){
-			int minX = topLeft.getAxis(),
-                minY = topLeft.getOrdinat(),
-                maxX = bottomRight.getAxis(),
-                maxY = bottomRight.getOrdinat();
-
-			for(int i = 0;i < lines.size();i++) {
-                lines[i].move(0,-1, topLeft, bottomRight);
-            }
-            topLeft.setAxis(minX);
-            topLeft.setOrdinat(minY-1);
-            bottomRight.setAxis(maxX);
-            bottomRight.setOrdinat(maxY-1);
-
-
-		}
 
 
         void rotate(int degree) {
@@ -443,58 +461,15 @@ class Polygon {
             }
         }
 
-    bool isHitFromBottom(Polygon p) {
-        return (this->getBottomRight().getOrdinat() > p.getTopLeft().getOrdinat());
-    }
-
-    bool isHitFromTop(Polygon p) {
-        return (this->getTopLeft().getOrdinat() < p.getBottomRight().getOrdinat());
-    }
-
-    bool isHitFromRight(Polygon p) {
-        return (this->getBottomRight().getAxis() > p.getTopLeft().getAxis());
-    }
-
-    bool isHitFromLeft(Polygon p) {
-        return (this->getTopLeft().getAxis() < p.getBottomRight().getAxis());
-    }
-
-    bool isHitBy(Polygon p) {
-        return (this->isHitFromBottom(p) && this->isHitFromLeft(p) && this->isHitFromRight(p) && this->isHitFromTop(p));
-    }
-
-
-    void bounce(float ratio, Clip clipBorder){
-        float height = 200;
-        while (height * ratio > 0) {
-            for (int i = 0; i < height; ++i){
-                //Util::clearScreen();
-
-                // this->scanLine(150, 0, 150, clipBorder);
-                // this->print(0, 0, 0, 255, 0, clipBorder);
-                this->fall();
-                this->update(1,0);
-            }
-            height *= ratio;
-            for (int i = 0; i < height; ++i){
-                //Util::clearScreen();
-
-                // this->scanLine(150, 0, 150, clipBorder);
-                // this->print(0, 0, 0, 255, 0, clipBorder);
-                this->up();
-                this->update(1,0);
-            }
-        }
-    }
-
     vector<Line> getLines(){
-
         return this->lines;
     }
 
     private:
         vector<Line> lines;
         Point topLeft, bottomRight;
+        int red,green,blue;
+        int c;
 };
 
 #endif

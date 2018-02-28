@@ -17,34 +17,18 @@ class MClip {
         }
 
         MClip(Point _topLeft, Point _bottomRight, vector<Polygon> _objects) {
-
             this-> topLeft = _topLeft;
             this-> bottomRight = _bottomRight;
             this-> objects = _objects;
-
         }
 
 
-        void printObjects(int ***framebuffer,int dx, int dy,int r, int g, int b){
+        Point getTopLeft(){
+            return this->topLeft;
+        }
 
-            for (int i = 0 ; i< objects.size() ; ++i){
-                //objects[i].update(topLeft.getAxis(),topLeft.getOrdinat());
-                // objects[i].printNoCLip(dx,dy,r,g,b,framebuffer);
-                // objects[i].scanLineNoClip(r,g,b,framebuffer);
-                if(i >= 0 && i <= 10) {
-                    objects[i].printNoCLip(0,0,200,0,135,framebuffer);
-                    objects[i].scanLineNoClip(200,0,135,framebuffer);
-                } else if(i >= 11 && i <= 20) {
-                    objects[i].printNoCLip(0,0,0,234,124,framebuffer);
-                    objects[i].scanLineNoClip(0,234,124,framebuffer);
-                } else if (i >= 21 && i <= 50){
-                    objects[i].printNoCLip(0,0,0,0,255,framebuffer);
-                    objects[i].scanLineNoClip(0,0,255,framebuffer);
-                } else {
-                    objects[i].printNoCLip(0,0,255,255,255,framebuffer);
-                    objects[i].scanLineNoClip(255,255,255,framebuffer);
-                }
-            }
+        Point getBottomRight(){
+            return this->bottomRight;
         }
 
         vector<Polygon> getObjects(){
@@ -54,6 +38,23 @@ class MClip {
         void setTopLeft(Point left){
             this->topLeft = left;
         }
+        void setBottomRight(Point right){
+            this->bottomRight = right;
+        }
+
+        void setPolygon (vector<Polygon> objects) {
+            this->objects = objects;
+        }
+
+        void printObjects(int ***framebuffer,int dx, int dy,int r, int g, int b){
+            for (int i = 0 ; i< objects.size() ; ++i){
+                objects[i].printNoCLip(0,0,objects[i].getRed(),
+                    objects[i].getGreen(),objects[i].getBlue(),framebuffer);
+                objects[i].scanLineNoClip(objects[i].getRed(),
+                    objects[i].getGreen(),objects[i].getBlue(),framebuffer);
+            }
+        }
+
 
         void drawClipBorder(int divx, int divy, int r, int g, int b, int *** buffer) {
             
@@ -72,17 +73,7 @@ class MClip {
             rightBorder.print(divx, divy, r, g, b, buffer);
         }
 
-        void setBottomRight(Point right){
-            this->bottomRight = right;
-        }
 
-        Point getTopLeft(){
-            return this->topLeft;
-        }
-
-        Point getBottomRight(){
-            return this->bottomRight;
-        }
 
     private:
         vector<Polygon> objects ;

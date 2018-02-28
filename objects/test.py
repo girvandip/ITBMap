@@ -111,4 +111,12 @@ for i in range(len(path_strings)):
     file.write(str(int(round(maksx)),))
     file.write( ' ',)
     file.write(str(int(round(maksy))))
+    file.write('\n')
+    if (i % 3 == 0) :
+        file.write("1")
+    elif (i % 3 == 2) :
+        file.write("2")
+    else :
+        file.write("3")
+
     file.close()
