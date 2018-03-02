@@ -6,24 +6,36 @@
 
 using namespace std;
 
-int main() {
+
     UserInput input;
     vector<bool> categories;
-    for(int i = 0; i < 5; i ++){
-        if (i % 2 == 0) {
-            categories.push_back(true);
-        } else {
-            categories.push_back(false);
+    vector<Polygon> objects;
+    
+    void createCategories(vector<bool>& categories) {
+        for(int i = 0; i < 5; i ++){
+            if (i % 2 == 0) {
+                categories.push_back(true);
+            } else {
+                categories.push_back(true);
+            }
         }
     }
-    vector<Polygon> objects;
-    string result;
-    for(int i = 2;i < 97;i++) {
-        result = "objects/" + std::to_string(i) + ".txt";
-        Polygon obj (result);
-        obj.update(0,50);
-        objects.push_back(obj);
+
+    void createObjects(vector<Polygon>& objects) {
+        string result;
+        for(int i = 2;i < 97;i++) {
+            result = "objects/" + std::to_string(i) + ".txt";
+            Polygon obj (result);
+            obj.update(0,50);
+            objects.push_back(obj);
+        }
     }
+
+int main() {
+    //initiation
+    createObjects(objects);
+    createCategories(categories);
+    
     Point A(10,20);
     Point B(410,500);
 

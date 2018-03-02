@@ -22,7 +22,6 @@ class MClip {
             this-> objects = _objects;
         }
 
-
         Point getTopLeft(){
             return this->topLeft;
         }
@@ -57,18 +56,15 @@ class MClip {
             }
         }
 
-
         void drawClipBorder(int divx, int divy, int r, int g, int b, int *** buffer) {
-            
-            Point upperRight(bottomRight.getAxis(),topLeft.getOrdinat());
+                        Point upperRight(bottomRight.getAxis(),topLeft.getOrdinat());
             Point downLeft(topLeft.getAxis(),bottomRight.getOrdinat());
 
             Line topBorder(topLeft, upperRight);
             Line bottomBorder(bottomRight, downLeft);
             Line leftBorder (downLeft,topLeft);
             Line rightBorder(upperRight, bottomRight);
-            
-            
+                        
             topBorder.print(divx, divy, r, g, b, buffer);
             bottomBorder.print(divx, divy, r, g, b, buffer);
             leftBorder.print(divx, divy, r, g, b, buffer);

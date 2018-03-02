@@ -66,7 +66,6 @@ class Polygon {
             fscanf(file, "%d", &numberOfLines);
 
             for(int i = 0; i < numberOfLines; i++){
-
                 fscanf(file, "%d %d %d %d", &x1, &y1, &x2, &y2);
 
                 Point p1(x1, y1);
@@ -168,10 +167,9 @@ class Polygon {
                     green = 255;
                     blue = 255;
                     break;
-
             }
-
         }
+        
         void setRed(int red) {
             this->red = red;
         }
@@ -270,7 +268,6 @@ class Polygon {
                         }
                     }
                 }
-
                 scanLineY++;
             }
         }
@@ -345,9 +342,7 @@ class Polygon {
                             // don't color the border
                             listOfIntersectPoints[i].setAxis(listOfIntersectPoints[i].getAxis()+1);
                             listOfIntersectPoints[i+1].setAxis(listOfIntersectPoints[i+1].getAxis()-1);
-                            
                             Line line(listOfIntersectPoints[i], listOfIntersectPoints[i+1]);
-                            
                             line.print(0,0, red, green, blue, buffer);
 
                             i++;
@@ -355,14 +350,11 @@ class Polygon {
                         }
                     }
                 }
-
                 scanLineY++;
             }
         }
 
-
         void rotate(int degree) {
-
             for(int i = 0;i < lines.size();i++) {
                 lines[i].rotate(degree, topLeft, bottomRight);
             }
@@ -391,8 +383,6 @@ class Polygon {
             bottomRight.setAxis(maxX);
             bottomRight.setOrdinat(maxY);
 
-            // cout << topLeft.getAxis() << " " << topLeft.getOrdinat() << endl;
-            // cout << bottomRight.getAxis() << " " << bottomRight.getOrdinat() << endl;
         }
 
         void scale(float scale) {
