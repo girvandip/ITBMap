@@ -53,6 +53,7 @@ class Polygon {
 
             fscanf(file, "%d", &categori);
             setColor(categori);
+            c = categori;
         }
 
         Polygon(string fileName) {
@@ -84,6 +85,7 @@ class Polygon {
 
             fscanf(file, "%d", &categori);
             setColor(categori);
+            c = categori;
 
         }
 
@@ -129,6 +131,10 @@ class Polygon {
 
         int getBlue() {
             return this->blue;
+        }
+
+        int getCategori() {
+            return this->c;
         }
 
 
@@ -468,7 +474,7 @@ class Polygon {
     private:
         vector<Line> lines;
         Point topLeft, bottomRight;
-        int red,green,blue;
+        int red,green,blue,c;
 };
 
 #endif

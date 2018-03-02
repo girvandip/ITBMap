@@ -8,7 +8,14 @@ using namespace std;
 
 int main() {
     UserInput input;
-
+    vector<bool> categories;
+    for(int i = 0; i < 5; i ++){
+        if (i % 2 == 0) {
+            categories.push_back(true);
+        } else {
+            categories.push_back(false);
+        }
+    }
     vector<Polygon> objects;
     string result;
     for(int i = 2;i < 97;i++) {
@@ -74,7 +81,7 @@ int main() {
         
         Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
         
-        sClip.render(mClip,frameBufferArray, 255,255,255);
+        sClip.render(mClip,frameBufferArray,categories);
 
         Util::printScreen(frameBufferArray);
         usleep(16); // sleep = 1000/fps
