@@ -29,11 +29,6 @@ class SClip {
 
         }
 
-        void updatePoint(Point p,int x, int y){
-            p.setAxis(p.getAxis() + x);
-            p.setOrdinat(p.getOrdinat() + y);
-        }
-
         void zoomIn(){
             topLeft.setAxis(topLeft.getAxis() + 10);
             topLeft.setOrdinat(topLeft.getOrdinat() + 10);
@@ -127,7 +122,7 @@ class SClip {
             } 
         }
 
-        void render(MClip mClip, int *** framebuffer, int r, int g, int b){
+        void render(MClip mClip, int *** framebuffer, vector<bool> active){
             float Sx= (lClip.getBottomRight().getAxis()-lClip.getTopLeft().getAxis())/
                 (bottomRight.getAxis() - topLeft.getAxis());
 
@@ -143,75 +138,62 @@ class SClip {
                 (bottomRight.getOrdinat()-topLeft.getOrdinat()));
 
             vector<Polygon> inClip;
-            vector<int> red;
-            vector<int> green;
-            vector<int> blue;
 
 
             for (int i = 0 ; i < mClip.getObjects().size(); ++i){
+               
                 Polygon test = mClip.getObjects()[i];
-                bool found = false;
-                int j = 0;
-                while(!found && j < test.getLines().size()) {
-                    if (this->clipLine(test.getLines()[j])) {
-                        found = true;
-                    } else {
-                        j++;
+                  if (active[test.getCategori()]) {  
+                    bool found = false;
+                    int j = 0;
+                    while(!found && j < test.getLines().size()) {
+                        if (this->clipLine(test.getLines()[j])) {
+                            found = true;
+                        } else {
+                            j++;
+                        }
                     }
-                }
 
-                if(found) {
-                    Polygon X;
+                    if(found) {
+                        Polygon X;
 
-                    Point newTopLeft((test.getTopLeft().getAxis()*Sx)+tX,
-                            test.getTopLeft().getOrdinat()*Sy+tY);
-                       
-                    Point newBottomRight((test.getBottomRight().getAxis()*Sx)+tX,
-                           (test.getBottomRight().getOrdinat()*Sy)+tY );
+                        Point newTopLeft((test.getTopLeft().getAxis()*Sx)+tX,
+                                test.getTopLeft().getOrdinat()*Sy+tY);
+                        
+                        Point newBottomRight((test.getBottomRight().getAxis()*Sx)+tX,
+                            (test.getBottomRight().getOrdinat()*Sy)+tY );
 
-                    X.setTopLeft(newTopLeft);
-                    X.setBottomRight(newBottomRight);
-                    //cout <<"FOUND"<<endl;
-                    for (int k = 0 ; k < test.getLines().size(); ++k) {
+                        X.setTopLeft(newTopLeft);
+                        X.setBottomRight(newBottomRight);
+                        //cout <<"FOUND"<<endl;
+                        for (int k = 0 ; k < test.getLines().size(); ++k) {
+                            
+                            Point P1((test.getLines()[k].getFirstPoint().getAxis()*Sx)+tX,
+                                test.getLines()[k].getFirstPoint().getOrdinat()*Sy+tY);
                         
-                        Point P1((test.getLines()[k].getFirstPoint().getAxis()*Sx)+tX,
-                            test.getLines()[k].getFirstPoint().getOrdinat()*Sy+tY);
-                       
-                        Point P2((test.getLines()[k].getSecondPoint().getAxis()*Sx)+tX,
-                            (test.getLines()[k].getSecondPoint().getOrdinat()*Sy)+tY );
-                        
-                        Line set(P1,P2);
-                        X.addLine(set);
-                        
-                        
+                            Point P2((test.getLines()[k].getSecondPoint().getAxis()*Sx)+tX,
+                                (test.getLines()[k].getSecondPoint().getOrdinat()*Sy)+tY );
+                            
+                            Line set(P1,P2);
+                            X.addLine(set);
+                            X.setBlue(mClip.getObjects()[i].getBlue());
+                            X.setRed(mClip.getObjects()[i].getRed());
+                            X.setGreen(mClip.getObjects()[i].getGreen());
+                            
+                        }
+                        inClip.push_back(X);
                     }
-                    inClip.push_back(X);
-                    if(i >= 0 && i <= 10) {
-                        red.push_back(200);
-                        green.push_back(0);
-                        blue.push_back(135);
-                    } else if(i >= 11 && i <= 20) {
-                        red.push_back(0);
-                        green.push_back(234);
-                        blue.push_back(124);
-                    } else if (i >= 21 && i <= 50) {
-                        red.push_back(0);
-                        green.push_back(0);
-                        blue.push_back(255);
-                    } else {
-                        red.push_back(255);
-                        green.push_back(255);
-                        blue.push_back(255);
-                    }
-                }
+                  }
             }
 
             for (int i = 0 ; i < inClip.size(); ++ i){
-                inClip[i].print(0,0,red[i],green[i],blue[i],lClip,framebuffer);
-                inClip[i].scanLine(red[i],green[i],blue[i],lClip,framebuffer);
+                inClip[i].print(0,0,inClip[i].getRed(),inClip[i].getGreen(),
+                inClip[i].getBlue(),lClip,framebuffer);
+                inClip[i].scanLine(inClip[i].getRed(),inClip[i].getGreen(),
+                inClip[i].getBlue(),lClip,framebuffer);
             }
 
-            mClip.printObjects(framebuffer,0,0,255,255,255);
+            mClip.printObjects(framebuffer,0,0, active);
 
             mClip.drawClipBorder(0,0,255,255,255,framebuffer);
             
@@ -242,6 +224,10 @@ class SClip {
 
 
 
+        void setlClip(Clip lCplip) {
+            this->lClip = lClip;
+        }
+
         void setTopLeft(Point left){
             this->topLeft = left;
         }
@@ -249,6 +235,11 @@ class SClip {
         void setBottomRight(Point right){
             this->bottomRight = right;
         }
+
+
+        Clip getlClip() {
+            return this->lClip;
+        } 
 
         Point getTopLeft(){
             return this->topLeft;
@@ -261,7 +252,6 @@ class SClip {
 
 
     private:
-
         Clip lClip;
         Point topLeft;
         Point bottomRight;
