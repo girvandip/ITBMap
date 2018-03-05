@@ -10,7 +10,7 @@ using namespace std;
     UserInput input;
     vector<bool> categories;
     vector<Polygon> objects;
-    
+
     void createCategories(vector<bool>& categories) {
         for(int i = 0; i < 5; i ++){
             if (i % 2 == 0) {
@@ -32,10 +32,26 @@ using namespace std;
     }
 
 int main() {
+
+    // Mouse
+    int mfd, bytes;
+    unsigned char data[3];
+
+    const char *pDevice = "/dev/input/mice";
+    // Open Mouse
+    mfd = open(pDevice, O_RDWR);
+    if(mfd == -1)
+    {
+        printf("ERROR Opening %s\n", pDevice);
+        return -1;
+    }
+
+    int left, middle, right;
+    signed char x, y;
     //initiation
     createObjects(objects);
     createCategories(categories);
-    
+
     Point A(10,20);
     Point B(410,500);
 
@@ -52,53 +68,65 @@ int main() {
     int *** frameBufferArray = Util::initFrameBuffer();
 
     while(1){
-        
+
+        // read mouse input_event
+
+        bytes = read(mfd, data, sizeof(data));
         //clear the buffer before print it
         Util::clearFrameBuffer(frameBufferArray);
         if(input.getKeyPress('q')){
             break;
         } else {
-            if(input.getKeyPress('d')){
-                C.update(10,0);
-                D.update(10,0);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            }  else if(input.getKeyPress('a')){
-                C.update(-10,0);
-                D.update(-10,0);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('s')){
-                C.update(0,10);
-                D.update(0,10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('w')){
-                C.update(0,-10);
-                D.update(0,-10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('z')){
-                C.update(10,10);
-                D.update(-10,-10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('x')){
-                C.update(-10,-10);
-                D.update(10,10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
+
+            if (bytes > 0 ){
+              x = data[1];
+              y = data[2];
+              C.update(x, y);
+              D.update(x,y);
+              sClip.setTopLeft(C);
+              sClip.setBottomRight(D);
             }
+            // if(input.getKeyPress('d')){
+            //     C.update(10,0);
+            //     D.update(10,0);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // }  else if(input.getKeyPress('a')){
+            //     C.update(-10,0);
+            //     D.update(-10,0);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // } else if(input.getKeyPress('s')){
+            //     C.update(0,10);
+            //     D.update(0,10);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // } else if(input.getKeyPress('w')){
+            //     C.update(0,-10);
+            //     D.update(0,-10);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // } else if(input.getKeyPress('z')){
+            //     C.update(10,10);
+            //     D.update(-10,-10);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // } else if(input.getKeyPress('x')){
+            //     C.update(-10,-10);
+            //     D.update(10,10);
+            //     sClip.setTopLeft(C);
+            //     sClip.setBottomRight(D);
+            // }
         }
-        
+
         Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
-        
+
         sClip.render(mClip,frameBufferArray,categories);
 
         Util::printScreen(frameBufferArray);
         usleep(16); // sleep = 1000/fps
     }
-    
+
 
     return 0;
 }
