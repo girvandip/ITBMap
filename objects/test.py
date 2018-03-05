@@ -1,6 +1,6 @@
 from xml.dom import minidom
 
-doc = minidom.parse("peta_itb_pohon.svg")  # parseString also exists
+doc = minidom.parse("peta_itb_pohon_jalan.svg")  # parseString also exists
 path_strings = [path.getAttribute('d') for path
                 in doc.getElementsByTagName('path')]
 
