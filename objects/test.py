@@ -4,6 +4,9 @@ doc = minidom.parse("peta_itb_pohon_jalan.svg")  # parseString also exists
 path_strings = [path.getAttribute('d') for path
                 in doc.getElementsByTagName('path')]
 
+path_colors = [path.getAttribute('stroke') for path
+                in doc.getElementsByTagName('path')]
+
 for i in range(len(path_strings)):
 
     file = open(str(i)+".txt","w")
@@ -114,12 +117,10 @@ for i in range(len(path_strings)):
     file.write(str(int(round(maksy))))
     file.write('\n')
 
-    #Type of Objects 
-    if (i % 3 == 0) :
-        file.write("1")
-    elif (i % 3 == 2) :
-        file.write("2")
-    else :
-        file.write("3")
-
+    tempcolor = path_colors[i].replace('#','')
+    n = 2
+    colorlist = [tempcolor[i:i+n] for i in range(0, len(tempcolor), n)]
+    for a in colorlist :
+        print a
+        file.write(str(int(a,16))+' ',)
     file.close()

@@ -13,17 +13,17 @@ using namespace std;
 
     void createCategories(vector<bool>& categories) {
         for(int i = 0; i < 5; i ++){
-            if (i % 2 == 0) {
+            // if (i % 2 == 0) {
+            //     categories.push_back(true);
+            // } else {
                 categories.push_back(true);
-            } else {
-                categories.push_back(true);
-            }
+            // }
         }
     }
 
     void createObjects(vector<Polygon>& objects) {
         string result;
-        for(int i = 2;i < 97;i++) {
+        for(int i = 2;i < 96;i++) {
             result = "objects/" + std::to_string(i) + ".txt";
             Polygon obj (result);
             obj.update(0,50);
@@ -77,15 +77,14 @@ int main() {
         if(input.getKeyPress('q')){
             break;
         } else {
-
             if (bytes > 0 ){
               x = data[1];
               y = data[2];
-              C.update(x, y);
-              D.update(x,y);
+              C.update(x,-y);
+              D.update(x,-y);
               sClip.setTopLeft(C);
               sClip.setBottomRight(D);
-            }
+            } 
             // if(input.getKeyPress('d')){
             //     C.update(10,0);
             //     D.update(10,0);
