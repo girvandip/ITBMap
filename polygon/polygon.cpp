@@ -106,7 +106,7 @@ class Polygon {
             }
         }
 
-        void printNoCLip(int divx, int divy, int red, int green, int blue, int*** buffer) {
+        void printNoClip(int divx, int divy, int red, int green, int blue, int*** buffer) {
             for(int i = 0; i < lines.size(); i++){
                 Line temp(
                     lines[i].getFirstPoint().getAxis(),
