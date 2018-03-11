@@ -108,6 +108,12 @@ class Point {
             y += divy;
         }
 
+        void print(int ***framebuffer, int r, int g, int b) {
+            framebuffer[(int)y][(int)x][0] = r;
+            framebuffer[(int)y][(int)x][1] = g;
+            framebuffer[(int)y][(int)x][2] = b;
+        }
+
         static bool isTheSame(Point a, Point b){
             return (a.getAxis() == b.getAxis()) && (a.getOrdinat() == b.getOrdinat());
         }
