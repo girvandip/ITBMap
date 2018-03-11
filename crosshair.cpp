@@ -19,10 +19,13 @@ void *getInput(void * threadid){
     unsigned char data[3];
 
     const char *pDevice = "/dev/input/mice";
-    Point p1(50, 50);
-    Point p2(49, 50);
-    Point p3(50, 49);
-    Point p4(49, 49);
+    // Point p1(50, 50);
+    // Point p2(49, 50);
+    // Point p3(50, 49);
+    // Point p4(49, 49);
+
+    string name = "objects/painter.txt";
+    Polygon painter(name);
 
     // Open Mouse
     fd = open(pDevice, O_RDWR);
@@ -34,7 +37,7 @@ void *getInput(void * threadid){
 
     int left = 0, middle = 0, right = 0;
     signed char x, y;
-    string name = "objects/crosshair.txt";
+    name = "objects/crosshair.txt";
     Polygon cross(name);
     while(1)
     {
@@ -56,43 +59,48 @@ void *getInput(void * threadid){
             //printf("x=%d, y=%d, left=%d, middle=%d, right=%d\n", x, y, left, middle, right);
 
             cross.update(x, -y);
-
+            painter.update(x, -y);  
+            
             if(right == 2){
-                printX = (cross.getBottomRight().getAxis() + cross.getTopLeft().getAxis())/2;
-                printY = (cross.getBottomRight().getOrdinat() + cross.getTopLeft().getOrdinat())/2;
+                
+                painter.printNoClip(0,0,0,0,0,paintbuffer);
+                painter.scanLineNoClip(0,0,0,paintbuffer);
+                // printX = (cross.getBottomRight().getAxis() + cross.getTopLeft().getAxis())/2;
+                // printY = (cross.getBottomRight().getOrdinat() + cross.getTopLeft().getOrdinat())/2;
+                // p1.setAxis(printX);
+                // p1.setOrdinat(printY);
+                // p2.setAxis(printX-1);
+                // p2.setOrdinat(printY);
+                // p3.setAxis(printX);
+                // p3.setOrdinat(printY-1);
+                // p4.setAxis(printX-1);
+                // p4.setOrdinat(printY-1);
 
-                p1.setAxis(printX);
-                p1.setOrdinat(printY);
-                p2.setAxis(printX-1);
-                p2.setOrdinat(printY);
-                p3.setAxis(printX);
-                p3.setOrdinat(printY-1);
-                p4.setAxis(printX-1);
-                p4.setOrdinat(printY-1);
-
-                p1.print(paintbuffer, 0, 0, 0);
-                p2.print(paintbuffer, 0, 0, 0);
-                p3.print(paintbuffer, 0, 0, 0);
-                p4.print(paintbuffer, 0, 0, 0);            
+                // p1.print(paintbuffer, 0, 0, 0);
+                // p2.print(paintbuffer, 0, 0, 0);
+                // p3.print(paintbuffer, 0, 0, 0);
+                // p4.print(paintbuffer, 0, 0, 0);            
             }
             
             if(left == 1){
-                printX = (cross.getBottomRight().getAxis() + cross.getTopLeft().getAxis())/2;
-                printY = (cross.getBottomRight().getOrdinat() + cross.getTopLeft().getOrdinat())/2;
+                painter.printNoClip(0,0,255,255,255,paintbuffer);
+                painter.scanLineNoClip(255,255,255,paintbuffer);
+                // printX = (cross.getBottomRight().getAxis() + cross.getTopLeft().getAxis())/2;
+                // printY = (cross.getBottomRight().getOrdinat() + cross.getTopLeft().getOrdinat())/2;
 
-                p1.setAxis(printX);
-                p1.setOrdinat(printY);
-                p2.setAxis(printX-1);
-                p2.setOrdinat(printY);
-                p3.setAxis(printX);
-                p3.setOrdinat(printY-1);
-                p4.setAxis(printX-1);
-                p4.setOrdinat(printY-1);
+                // p1.setAxis(printX);
+                // p1.setOrdinat(printY);
+                // p2.setAxis(printX-1);
+                // p2.setOrdinat(printY);
+                // p3.setAxis(printX);
+                // p3.setOrdinat(printY-1);
+                // p4.setAxis(printX-1);
+                // p4.setOrdinat(printY-1);
 
-                p1.print(paintbuffer, 255, 255, 255);
-                p2.print(paintbuffer, 255, 255, 255);
-                p3.print(paintbuffer, 255, 255, 255);
-                p4.print(paintbuffer, 255, 255, 255);
+                // p1.print(paintbuffer, 255, 255, 255);
+                // p2.print(paintbuffer, 255, 255, 255);
+                // p3.print(paintbuffer, 255, 255, 255);
+                // p4.print(paintbuffer, 255, 255, 255);
             }
             
         }
