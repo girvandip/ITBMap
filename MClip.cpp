@@ -48,7 +48,7 @@ class MClip {
         void printObjects(int ***framebuffer,int dx, int dy, vector<bool> categories){
             for (int i = 0 ; i< objects.size() ; ++i){
                 if (categories[objects[i].getCategori()]) {
-                    objects[i].printNoCLip(0,0,objects[i].getRed(),
+                    objects[i].printNoClip(0,0,objects[i].getRed(),
                     objects[i].getGreen(),objects[i].getBlue(),framebuffer);
                     objects[i].scanLineNoClip(objects[i].getRed(),
                     objects[i].getGreen(),objects[i].getBlue(),framebuffer);
