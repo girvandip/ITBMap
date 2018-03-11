@@ -28,7 +28,7 @@ class Polygon {
             file = fopen(fileName, "r");
 
             int x1, y1, x2, y2;
-            int categori;
+            int r, g, b;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -51,9 +51,11 @@ class Polygon {
             bottomRight.setOrdinat(y1);
 
 
-            fscanf(file, "%d", &categori);
-            setColor(categori);
-            c = categori;
+            fscanf(file, "%d %d %d", &r, &g, &b);
+            setRed(r);
+            setGreen(g);
+            setBlue(b);
+            setCategory(r,g,b);
         }
 
         Polygon(string fileName) {
@@ -61,7 +63,7 @@ class Polygon {
             file = fopen(fileName.c_str(), "r");
 
             int x1, y1, x2, y2;
-            int categori;
+            int r ,g, b;
             int numberOfLines;
             fscanf(file, "%d", &numberOfLines);
 
@@ -82,9 +84,12 @@ class Polygon {
             bottomRight.setAxis(x1);
             bottomRight.setOrdinat(y1);
 
-            fscanf(file, "%d", &categori);
-            setColor(categori);
-            c = categori;
+            fscanf(file, "%d %d %d", &r, &g, &b);
+            setRed(r);
+            setGreen(g);
+            setBlue(b);
+            setCategory(r,g,b);
+            
 
         }
 
@@ -137,6 +142,19 @@ class Polygon {
         }
 
 
+        void setCategory ( int r, int g, int b) {
+            if (r == 255 && g == 0 && b == 0) {
+                c = 1 ;
+            } else if (r == 0 && g == 255 && b == 0) {
+                c = 2 ;
+            } else if (r == 0 && g == 0 && b == 255) {
+                c = 3 ;
+            } else  {
+                c = 4 ;
+            }
+        }
+
+
         void setTopLeft(Point x){
             this->topLeft = x;
         }
@@ -145,30 +163,6 @@ class Polygon {
             this->bottomRight = y;
         }
 
-        void setColor(int categori) {
-            switch(categori) {
-                case 1 :
-                    setRed(0);
-                    setGreen(255);
-                    setBlue(0);
-                    break;
-                case 2 :
-                    setRed(255);
-                    setGreen(255);
-                    setBlue(0);
-                    break;
-                case 3 :
-                    setRed(200);
-                    setGreen(255);
-                    setBlue(0);
-                    break;
-                default :
-                    red = 255;
-                    green = 255;
-                    blue = 255;
-                    break;
-            }
-        }
         
         void setRed(int red) {
             this->red = red;
