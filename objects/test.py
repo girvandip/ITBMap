@@ -117,10 +117,21 @@ for i in range(len(path_strings)):
     file.write(str(int(round(maksy))))
     file.write('\n')
 
+<<<<<<< HEAD
     tempcolor = path_colors[i].replace('#','')
     n = 2
     colorlist = [tempcolor[i:i+n] for i in range(0, len(tempcolor), n)]
     for a in colorlist :
         print a
         file.write(str(int(a,16))+' ',)
+=======
+    #Type of Objects
+    if (i % 3 == 0) :
+        file.write("1")
+    elif (i % 3 == 2) :
+        file.write("2")
+    else :
+        file.write("3")
+
+>>>>>>> a4c50785e758738256d2058fea7f9b52e94b543f
     file.close()
