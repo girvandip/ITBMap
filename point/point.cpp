@@ -107,6 +107,10 @@ class Point {
             x += divx;
             y += divy;
         }
+
+        static bool isTheSame(Point a, Point b){
+            return (a.getAxis() == b.getAxis()) && (a.getOrdinat() == b.getOrdinat());
+        }
     
     private:
         float x, y;

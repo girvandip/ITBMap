@@ -250,8 +250,27 @@ class Polygon {
                     // only color if total point is more than one
                     if(listOfIntersectPoints.size() > 1){
                         // check if the count is odd
-                        int count = (listOfIntersectPoints.size() % 2 == 1) ?
-                            (listOfIntersectPoints.size() - 1) : listOfIntersectPoints.size();
+                        if(listOfIntersectPoints.size() % 2 == 1){
+                            int i = 0;
+                            while(listOfIntersectPoints.size() % 2 == 1){
+                                if(listOfIntersectPoints[i].getAxis() == listOfIntersectPoints[i+1].getAxis()
+                                    && listOfIntersectPoints[i].getOrdinat() == listOfIntersectPoints[i+1].getOrdinat()){
+                                        listOfIntersectPoints.erase(listOfIntersectPoints.begin() + i);
+                                }
+                                i++;
+                            }
+                        }
+
+                        // special case for a a b b
+                        if(listOfIntersectPoints.size() == 4){
+                            if(Point::isTheSame(listOfIntersectPoints[0], listOfIntersectPoints[1]) &&
+                                Point::isTheSame(listOfIntersectPoints[2], listOfIntersectPoints[3])){
+                                
+                                listOfIntersectPoints.erase(listOfIntersectPoints.begin());
+                                listOfIntersectPoints.erase(listOfIntersectPoints.begin() + 1);
+                            }    
+                        }
+                        int count = (listOfIntersectPoints.size());
 
                         for(int i = 0; i < count; i++) {
                             // don't color the border
@@ -331,12 +350,39 @@ class Polygon {
                         listOfIntersectPoints[smallest] = listOfIntersectPoints[i];
                         listOfIntersectPoints[i] = temp;
                     }
+                    //debug
+                    // if(scan == 183){
+                    //     cout << listOfIntersectPoints.size() << endl;
+                    //     for(int i = 0; i < listOfIntersectPoints.size(); i++){
+                    //         cout << listOfIntersectPoints[i].getAxis() << " " << listOfIntersectPoints[i].getOrdinat() << endl;
+                    //     }
+                    // }
+                    
 
                     // only color if total point is more than one
                     if(listOfIntersectPoints.size() > 1){
                         // check if the count is odd
-                        int count = (listOfIntersectPoints.size() % 2 == 1) ?
-                            (listOfIntersectPoints.size() - 1) : listOfIntersectPoints.size();
+                        if(listOfIntersectPoints.size() % 2 == 1){
+                            int i = 0;
+                            while(listOfIntersectPoints.size() % 2 == 1){
+                                if(listOfIntersectPoints[i].getAxis() == listOfIntersectPoints[i+1].getAxis()
+                                    && listOfIntersectPoints[i].getOrdinat() == listOfIntersectPoints[i+1].getOrdinat()){
+                                        listOfIntersectPoints.erase(listOfIntersectPoints.begin() + i);
+                                }
+                                i++;
+                            }
+                        }
+
+                        // special case for a a b b
+                        if(listOfIntersectPoints.size() == 4){
+                            if(Point::isTheSame(listOfIntersectPoints[0], listOfIntersectPoints[1]) &&
+                                Point::isTheSame(listOfIntersectPoints[2], listOfIntersectPoints[3])){
+                                
+                                listOfIntersectPoints.erase(listOfIntersectPoints.begin());
+                                listOfIntersectPoints.erase(listOfIntersectPoints.begin() + 1);
+                            }    
+                        }
+                        int count = listOfIntersectPoints.size();
 
                         for(int i = 0; i < count; i++) {
                             // don't color the border
