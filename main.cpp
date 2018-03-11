@@ -10,6 +10,8 @@ using namespace std;
     UserInput input;
     vector<bool> categories;
     vector<Polygon> objects;
+    unsigned char data[3];
+
 
     void createCategories(vector<bool>& categories) {
         for(int i = 0; i < 5; i ++){
@@ -31,15 +33,17 @@ using namespace std;
         }
     }
 
+
+
 int main() {
 
     // Mouse
     int mfd, bytes;
-    unsigned char data[3];
+
 
     const char *pDevice = "/dev/input/mice";
     // Open Mouse
-    mfd = open(pDevice, O_RDWR);
+    mfd = open(pDevice, O_RDWR | O_NONBLOCK);
     if(mfd == -1)
     {
         printf("ERROR Opening %s\n", pDevice);
@@ -47,7 +51,7 @@ int main() {
     }
 
     int left, middle, right;
-    signed char x, y;
+    signed char x, y, leftClick, rightClick;
     //initiation
     createObjects(objects);
     createCategories(categories);
@@ -80,42 +84,56 @@ int main() {
             if (bytes > 0 ){
               x = data[1];
               y = data[2];
+              leftClick = data[0] & 0x1;
+              rightClick = data[0] & 0x2;
               C.update(x,-y);
               D.update(x,-y);
               sClip.setTopLeft(C);
               sClip.setBottomRight(D);
-            } 
-            // if(input.getKeyPress('d')){
-            //     C.update(10,0);
-            //     D.update(10,0);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // }  else if(input.getKeyPress('a')){
-            //     C.update(-10,0);
-            //     D.update(-10,0);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // } else if(input.getKeyPress('s')){
-            //     C.update(0,10);
-            //     D.update(0,10);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // } else if(input.getKeyPress('w')){
-            //     C.update(0,-10);
-            //     D.update(0,-10);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // } else if(input.getKeyPress('z')){
-            //     C.update(10,10);
-            //     D.update(-10,-10);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // } else if(input.getKeyPress('x')){
-            //     C.update(-10,-10);
-            //     D.update(10,10);
-            //     sClip.setTopLeft(C);
-            //     sClip.setBottomRight(D);
-            // }
+
+              if (leftClick == 1) {
+                C.update(10,10);
+                D.update(-10,-10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+              } else if (rightClick == 2){
+                C.update(-10,-10);
+                D.update(10,10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+              }
+            }
+            if(input.getKeyPress('d')){
+                C.update(10,0);
+                D.update(10,0);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            }  else if(input.getKeyPress('a')){
+                C.update(-10,0);
+                D.update(-10,0);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            } else if(input.getKeyPress('s')){
+                C.update(0,10);
+                D.update(0,10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            } else if(input.getKeyPress('w')){
+                C.update(0,-10);
+                D.update(0,-10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            } else if(input.getKeyPress('z')){
+                C.update(10,10);
+                D.update(-10,-10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            } else if(input.getKeyPress('x')){
+                C.update(-10,-10);
+                D.update(10,10);
+                sClip.setTopLeft(C);
+                sClip.setBottomRight(D);
+            }
         }
 
         Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
