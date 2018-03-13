@@ -1,158 +1,184 @@
-#include "MClip.cpp"
-#include "SClip.cpp"
 #include <iostream>
-#include "utils/util.cpp"
-#include "utils/UserInput.cpp"
+#include <signal.h>
+#include <ncurses.h>
+#include <menu.h>
+#include <string>
+#include <unistd.h>
+
+#include "tugas6.cpp"
+#include "tugas7.cpp"
+#include "tugas5.cpp"
+#include "tugas1.cpp"
+#include "tugas2.cpp"
+#include "tugas3.cpp"
 
 using namespace std;
 
+#define SCREEN_MAIN 0
 
-    UserInput input;
-    vector<bool> categories;
-    vector<Polygon> objects;
-    unsigned char data[3];
+#define KKEY_DOWN 258
+#define KKEY_UP 259
+#define KEY_q 113
+#define MENU_COUNT 6
+#define ESC 27
 
+char *MenuItems[MENU_COUNT];
+int SelItem = 0;
+int LastItem = 0;
+char *HeaderText;
+char *StatusText;
+WINDOW *win;
+bool Terminated;
+int Screen = 0;
+int LastKey = 0;
+int MaxX = 0;
+int MaxY = 0;
 
-    void createCategories(vector<bool>& categories) {
-        for(int i = 0; i < 5; i ++){ 
-                categories.push_back(true);
+bool run = true;
 
-        }
+int ProcessScreenMain();
+void ClearLine(int y, int l);
+
+// void *runTugas(void * id){
+//   int last = *((int*) id);
+//   if(last == 55){
+//     tugas7(&run);
+//   } else if(last == 54){
+//     tugas6(&run);
+//   } else if(last == 53) {
+//     tugas5(&run);
+//   } else if(last == 52) {
+//     tugas5(&run);
+//   } else if(last == 51) {
+//     tugas3(&run);
+//   } else if(last == 50) {
+//     tugas2(&run);
+//   } else if(last == 49) {
+//     tugas1(&run);
+//   }
+// }
+
+int Process() {
+  getmaxyx(win, MaxY, MaxX);
+  
+  switch (Screen) {
+    default: ProcessScreenMain();
+  }
+
+  if (LastKey == KEY_BACKSPACE) {
+    Terminated = true;
+  } else if(LastKey >= 49 && LastKey <= 55){
+    //Terminated = true;
+    if(LastKey == 55){
+      tugas7(&run);
+    } else if(LastKey == 54){
+      tugas6(&run);
+    } else if(LastKey == 53) {
+      tugas5(&run);
+    } else if(LastKey == 52) {
+      tugas5(&run);
+    } else if(LastKey == 51) {
+      tugas3(&run);
+    } else if(LastKey == 50) {
+      tugas2(&run);
+    } else if(LastKey == 49) {
+      tugas1(&run);
     }
+    
+  }
+}
 
-    void createObjects(vector<Polygon>& objects) {
-        string result;
-        for(int i = 2;i < 97;i++) {
-            result = "objects/" + std::to_string(i) + ".txt";
-            Polygon obj (result);
-            obj.update(0,50);
-            objects.push_back(obj);
-        }
+int ProcessScreenMain() {
+  MenuItems[0] = "Tugas 1: Print the names of the team members to frame buffer  (press 1)";
+  MenuItems[1] = "Tugas 2: Print objects with lines                             (press 2)";
+  MenuItems[2] = "Tugas 3: Print characters with Floodfill                      (press 3)";
+  MenuItems[3] = "Tugas 4 & 5: Print objects with Scan Line and Clipping View   (press 4/5)";
+  MenuItems[4] = "Tugas 6: Print ITB Map with View Windowing                    (press 6)";
+  MenuItems[5] = "Tugas 7: Crosshair Paint Demo                                 (press 7)";
+  LastItem = MENU_COUNT - 1;
+  
+  attrset(COLOR_PAIR(1));
+  for (int i = 0; i <= MaxY; i++) ClearLine(i, MaxX);
+
+  // draw header
+  attrset(A_BOLD|COLOR_PAIR(2));
+  ClearLine(0, MaxX);
+  mvaddstr(0, 0, HeaderText);
+  
+  // draw body
+  attrset(COLOR_PAIR(1));
+
+  for (int i = 0; i <= LastItem; i++) {
+    if (SelItem == i) {
+      attrset(COLOR_PAIR(3));
+    } else {
+      attrset(COLOR_PAIR(1));
     }
+    ClearLine(1 + i, MaxX);
+    mvaddstr(1 + i, 0, MenuItems[i]);
+  }
 
+  // draw status line
+  attrset(A_BOLD|COLOR_PAIR(2));
+  ClearLine(MaxY - 2, MaxX);
+  mvaddstr(MaxY - 2, 0, StatusText);
 
+  curs_set(0);
+  refresh();
+  
+  LastKey = getch();
+  
+  if (LastKey == KEY_UP) SelItem--;
+  if (LastKey == KEY_DOWN) SelItem++;
 
-int main() {
+  if (SelItem > LastItem) SelItem = LastItem;
+  if (SelItem < 0) SelItem = 0;
+}
 
-    // Mouse
-    int mfd, bytes;
+void ClearLine(int y, int l) {
+  move(y, 1);
+  l++;
+  char Str[l];
+  for (int i = 0; i < l; i++) Str[i] = ' ';
+  Str[l - 1] = '\0';
+  mvaddstr(y, 0, Str);
+}
 
+void CatchSIG(int sig) {
+  Terminated = true;
+}
 
-    const char *pDevice = "/dev/input/mice";
-    // Open Mouse
-    mfd = open(pDevice, O_RDWR | O_NONBLOCK);
-    if(mfd == -1)
-    {
-        printf("ERROR Opening %s\n", pDevice);
-        return -1;
-    }
+int main(int argc, char *argv[]) {
+  int c = 0;
+  
+  signal(SIGINT, CatchSIG);
+  
+  initscr();
+  keypad(stdscr, true);
+  nonl(); 
+  cbreak();
+  noecho();   
+  win = newwin(0, 0, 0, 0);
+  
+  if (has_colors()) {
+    start_color();
+    init_pair(1, COLOR_WHITE,   COLOR_BLACK);
+    init_pair(2, COLOR_WHITE,   COLOR_BLUE);
+    init_pair(3, COLOR_BLACK,   COLOR_CYAN);
+  }
+  
+  SelItem = 0;
+  LastItem = 0;
+  HeaderText = "----------------------- TUGAS GRAFIKA 1 - 7 -------------------";
+  StatusText = "--- Created by Group 4 Class 03 ----- Press Backspace to escape";
+  
+  while (!Terminated) {
+    Process();
+    // sleep(1);
+  }
 
-    int left, middle, right;
-    signed char x, y, leftClick, rightClick;
-    //initiation
-    createObjects(objects);
-    createCategories(categories);
+  cout << "Terminated" << endl;
 
-    Point A(10,20);
-    Point B(410,500);
-
-    Point C(80,60);
-    Point D(150,130);
-
-    Point E(520,20);
-    Point F(1220,720);
-
-    Clip Lclip(E,F);
-    SClip sClip(C,D,Lclip);
-
-    MClip mClip(A,B,objects);
-    int *** frameBufferArray = Util::initFrameBuffer();
-
-    while(1){
-
-        // read mouse input_event
-
-        bytes = read(mfd, data, sizeof(data));
-        //clear the buffer before print it
-        Util::clearFrameBuffer(frameBufferArray);
-        if(input.getKeyPress('q')){
-            break;
-        } else {
-            if (bytes > 0 ){
-              x = data[1];
-              y = data[2];
-              leftClick = data[0] & 0x1;
-              rightClick = data[0] & 0x2;
-              C.update(x,-y);
-              D.update(x,-y);
-              sClip.setTopLeft(C);
-              sClip.setBottomRight(D);
-
-              if (leftClick == 1) {
-                C.update(10,10);
-                D.update(-10,-10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-              } else if (rightClick == 2){
-                C.update(-10,-10);
-                D.update(10,10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-              }
-            }
-            if(input.getKeyPress('d')){
-                C.update(10,0);
-                D.update(10,0);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            }  else if(input.getKeyPress('a')){
-                C.update(-10,0);
-                D.update(-10,0);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('s')){
-                C.update(0,10);
-                D.update(0,10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('w')){
-                C.update(0,-10);
-                D.update(0,-10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('z')){
-                C.update(10,10);
-                D.update(-10,-10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('x')){
-                C.update(-10,-10);
-                D.update(10,10);
-                sClip.setTopLeft(C);
-                sClip.setBottomRight(D);
-            } else if(input.getKeyPress('j')){
-               categories[1] = !categories[1];
-
-            } else if(input.getKeyPress('k')){
-               categories[2] = !categories[2];
-
-            } else if(input.getKeyPress('l')){
-               categories[3] = !categories[3];
-
-            } else if(input.getKeyPress('m')){
-               categories[4] = !categories[4];
-                
-            }
-        }
-
-        Lclip.drawClipBorder(0,0,255,255,255,frameBufferArray);
-
-        sClip.render(mClip,frameBufferArray,categories);
-
-        Util::printScreen(frameBufferArray);
-        usleep(16); // sleep = 1000/fps
-    }
-
-
-    return 0;
+  endwin();
+  return 0;
 }

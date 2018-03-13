@@ -41,6 +41,9 @@ void *getInput(void * threadid){
     Polygon cross(name);
     while(1)
     {
+        bool running = *((bool*) threadid);
+        if(!running) break;
+
         Util::clearFrameBuffer(cursorbuffer);
         Util::clearFrameBuffer(framebuffer);
 
@@ -103,18 +106,26 @@ void *getInput(void * threadid){
                 // p4.print(paintbuffer, 255, 255, 255);
             }
             
+            if(middle != 0){
+                break;
+            }
         }
         Util::mergeFrameBuffer(cursorbuffer, paintbuffer, framebuffer);
         Util::printScreen(framebuffer);
     }
 }
 
-int main(int argc, char** argv)
+int tugas7(bool *running)
 {
     pthread_t mouse;
-    pthread_create(&mouse, NULL, getInput, 0);
+    pthread_create(&mouse, NULL, getInput, running);
 
-    pthread_exit(NULL);
+    pthread_join(mouse, NULL);
+
+    Util::clearFrameBuffer(framebuffer);
+    Util::printScreen(framebuffer);
+
+    *running = true;
 
     return 0; 
 }
