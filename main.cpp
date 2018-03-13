@@ -14,18 +14,15 @@ using namespace std;
 
 
     void createCategories(vector<bool>& categories) {
-        for(int i = 0; i < 5; i ++){
-            // if (i % 2 == 0) {
-            //     categories.push_back(true);
-            // } else {
+        for(int i = 0; i < 5; i ++){ 
                 categories.push_back(true);
-            // }
+
         }
     }
 
     void createObjects(vector<Polygon>& objects) {
         string result;
-        for(int i = 2;i < 96;i++) {
+        for(int i = 2;i < 97;i++) {
             result = "objects/" + std::to_string(i) + ".txt";
             Polygon obj (result);
             obj.update(0,50);
@@ -133,6 +130,18 @@ int main() {
                 D.update(10,10);
                 sClip.setTopLeft(C);
                 sClip.setBottomRight(D);
+            } else if(input.getKeyPress('j')){
+               categories[1] = !categories[1];
+
+            } else if(input.getKeyPress('k')){
+               categories[2] = !categories[2];
+
+            } else if(input.getKeyPress('l')){
+               categories[3] = !categories[3];
+
+            } else if(input.getKeyPress('m')){
+               categories[4] = !categories[4];
+                
             }
         }
 
