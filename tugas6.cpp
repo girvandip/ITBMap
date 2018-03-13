@@ -35,7 +35,7 @@ using namespace std;
 
 
 
-int tugas6() {
+int tugas6(bool *running) {
 
     // Mouse
     int mfd, bytes;
@@ -72,6 +72,7 @@ int tugas6() {
     int *** frameBufferArray = Util::initFrameBuffer();
 
     while(1){
+        if(!(*running)) break;
 
         // read mouse input_event
 
@@ -147,6 +148,6 @@ int tugas6() {
     Util::clearFrameBuffer(frameBufferArray);
     Util::printScreen(frameBufferArray);
 
-
+    *running = true;
     return 0;
 }

@@ -19,7 +19,7 @@ Line mleft(100,600,100,100);
 Clip clip(mtop, mright, mbottom, mleft);
 Point middleClip(650, 350);
 
-int tugas5() {
+int tugas5(bool *running) {
     Polygon plane ((char*)"objects/plane.txt");
     Polygon tire ((char*)"objects/tire.txt");
     Polygon tire2 ((char*)"objects/tire.txt");
@@ -58,6 +58,8 @@ int tugas5() {
     frameBufferArray = Util::initFrameBuffer();
     bool hitByBullet = false;
     while(i < 1.12) {
+        if(!(*running)) break;
+
         Util::printScreen(frameBufferArray);
         Util::clearFrameBuffer(frameBufferArray);
 
@@ -115,6 +117,8 @@ int tugas5() {
     int height = 100;
     if(hit) {
         while (j<=height) {
+            if(!(*running)) break;
+
             Util::printScreen(frameBufferArray);
             Util::clearFrameBuffer(frameBufferArray);
             clip.drawClipBorder(0,0,255,255,255, frameBufferArray);
@@ -168,6 +172,8 @@ int tugas5() {
 
     Util::clearFrameBuffer(frameBufferArray);
     Util::printScreen(frameBufferArray);
+
+    *running = true;
     return 0;
 }
 

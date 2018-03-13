@@ -20,6 +20,7 @@ using namespace std;
 #define KKEY_UP 259
 #define KEY_q 113
 #define MENU_COUNT 6
+#define ESC 27
 
 char *MenuItems[MENU_COUNT];
 int SelItem = 0;
@@ -33,8 +34,29 @@ int LastKey = 0;
 int MaxX = 0;
 int MaxY = 0;
 
+bool run = true;
+
 int ProcessScreenMain();
 void ClearLine(int y, int l);
+
+// void *runTugas(void * id){
+//   int last = *((int*) id);
+//   if(last == 55){
+//     tugas7(&run);
+//   } else if(last == 54){
+//     tugas6(&run);
+//   } else if(last == 53) {
+//     tugas5(&run);
+//   } else if(last == 52) {
+//     tugas5(&run);
+//   } else if(last == 51) {
+//     tugas3(&run);
+//   } else if(last == 50) {
+//     tugas2(&run);
+//   } else if(last == 49) {
+//     tugas1(&run);
+//   }
+// }
 
 int Process() {
   getmaxyx(win, MaxY, MaxX);
@@ -42,26 +64,27 @@ int Process() {
   switch (Screen) {
     default: ProcessScreenMain();
   }
-  
-  if (LastKey == KEY_q) {
+
+  if (LastKey == KEY_BACKSPACE) {
     Terminated = true;
   } else if(LastKey >= 49 && LastKey <= 55){
     //Terminated = true;
     if(LastKey == 55){
-      tugas7();
+      tugas7(&run);
     } else if(LastKey == 54){
-      tugas6();
+      tugas6(&run);
     } else if(LastKey == 53) {
-      tugas5();
+      tugas5(&run);
     } else if(LastKey == 52) {
-      tugas5();
+      tugas5(&run);
     } else if(LastKey == 51) {
-      tugas3();
+      tugas3(&run);
     } else if(LastKey == 50) {
-      tugas2();
+      tugas2(&run);
     } else if(LastKey == 49) {
-      tugas1();
+      tugas1(&run);
     }
+    
   }
 }
 
@@ -140,21 +163,22 @@ int main(int argc, char *argv[]) {
   if (has_colors()) {
     start_color();
     init_pair(1, COLOR_WHITE,   COLOR_BLACK);
-    init_pair(2, COLOR_GREEN,   COLOR_BLUE);
+    init_pair(2, COLOR_WHITE,   COLOR_BLUE);
     init_pair(3, COLOR_BLACK,   COLOR_CYAN);
   }
   
   SelItem = 0;
   LastItem = 0;
-  HeaderText = "  q:Quit  ";
-  StatusText = "Created by Group 4 Class 03";
+  HeaderText = "----------------------- TUGAS GRAFIKA 1 - 7 -------------------";
+  StatusText = "--- Created by Group 4 Class 03 ----- Press Backspace to escape";
   
   while (!Terminated) {
     Process();
-    usleep(1000);
+    // sleep(1);
   }
 
   cout << "Terminated" << endl;
 
   endwin();
+  return 0;
 }

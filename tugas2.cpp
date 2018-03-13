@@ -6,7 +6,7 @@
 
 struct termios initial_settings, new_settings;
 
-int tugas2() {
+int tugas2(bool *running) {
 	int length, i, j, k;
 	char * Name;
 	char * Name2;
@@ -92,6 +92,8 @@ int tugas2() {
    
 
     for (i = 200; i > -1300; i--) {
+        if(!(*running)) break;
+
         n = getchar();
     
         if(n != EOF)
@@ -137,7 +139,7 @@ int tugas2() {
     tcsetattr(0, TCSANOW, &initial_settings);
 
     clearScreen2();
-
+    *running = true;
 	
 	return 0;
 }

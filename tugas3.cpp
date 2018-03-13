@@ -9,7 +9,7 @@
 // struct termios initial_settings,
 //                new_settings;
 
-int tugas3() {
+int tugas3(bool *running) {
 	int length, i, j, k;
 	char * Name;
 	char * Name2;
@@ -40,6 +40,6 @@ int tugas3() {
 
     sleep(2);
     clearScreen3();
-
+    *running = true;
 	return 0;
 }

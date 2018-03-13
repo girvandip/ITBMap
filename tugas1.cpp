@@ -5,7 +5,7 @@
 #include "printChar1.h"
 #include "printName1.h"
 
-int tugas1()
+int tugas1(bool *running)
 {
     int i, timer;
     char *Aldrich, *Aggi, *Mico, *Bobby, *Royyan, *Amuz, *Icha, *Fajar;
@@ -105,6 +105,7 @@ int tugas1()
     Fajar[4] = 'r';
     
     for(y = vinfo.yres - 10; y >= -720; y--){
+        if(!(*running)) break;
         printName1(Aldrich, 7, 198, 40, 40, y);
         printName1(Royyan, 6, 255, 87, 34, y + 90);
         printName1(Mico, 4, 255, 255, 0, y + 180);
@@ -131,6 +132,6 @@ int tugas1()
     free(Icha);
 
     clearScreen1();
-
+    *running = true;
     return 0;
 }
