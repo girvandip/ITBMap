@@ -1,6 +1,6 @@
 from xml.dom import minidom
 
-doc = minidom.parse('peta_itb_pohon_jalan.svg')  # parseString also exists
+doc = minidom.parse('peta_itb_pohon_jalan_temp.svg')  # parseString also exists
 path_strings = [path.getAttribute('d') for path
                 in doc.getElementsByTagName('path')]
 
@@ -30,15 +30,15 @@ for i in range(len(path_strings)):
     tempy = float(line[2])
     line = list(map(float, line))
     # print line
-    for i in range(len(line)) :
-        if (line[i] != ' '):
-            if (i > 2) :
-                if (i % 2 == 1) :
-                    line[i] = float(tempx) + float(line[i])
-                    tempx = float(line[i])
+    for j in range(len(line)) :
+        if (line[j] != ' '):
+            if (j > 2) :
+                if (j % 2 == 1) :
+                    line[j] = (float(tempx) + float(line[j]))
+                    tempx = repr(float(line[j]))
                 else :
-                    line[i] = float(tempy) + float(line[i])
-                    tempy = float(line[i])
+                    line[j] = float(tempy) + float(line[j])
+                    tempy = float(line[j])
 
     maksx = float(line[1])
     minx = float(line[1])
@@ -46,57 +46,57 @@ for i in range(len(path_strings)):
     miny = float(line[2])
     line = list(map(str, line))
 
-    for i in range(len(line)) :
-        if (i == 0) :
-            print int(round(float(line[i])))
-            file.write(str(int(round(float(line[i])))))
+    for k in range(len(line)) :
+        if (k == 0) :
+            print int(round(float(line[k])))
+            file.write(str(int(round(float(line[k])))))
             file.write('\n')
-        elif ( i < len(line) - 2) :
-            if ( i % 2 == 1) :
-                print int(round(float(line[i]))),
+        elif ( k < len(line) - 2) :
+            if ( k % 2 == 1) :
+                print int(round(float(line[k]))),
                 print ' ',
-                print int(round(float(line[i+1]))),
+                print int(round(float(line[k+1]))),
                 print ' ',
-                print int(round(float(line[i+2]))),
+                print int(round(float(line[k+2]))),
                 print ' ',
-                print int(round(float(line[i+3])))
+                print int(round(float(line[k+3])))
 
-                file.write(str(int(round(float(line[i]))),))
+                file.write(str(int(round(float(line[k]))),))
                 file.write( ' ',)
-                file.write(str(int(round(float(line[i+1]))),))
+                file.write(str(int(round(float(line[k+1]))),))
                 file.write( ' ',)
-                file.write(str(int(round(float(line[i+2]))),))
+                file.write(str(int(round(float(line[k+2]))),))
                 file.write( ' ',)
-                file.write(str(int(round(float(line[i+3])))))
+                file.write(str(int(round(float(line[k+3])))))
                 file.write('\n')
-        elif ( i == len(line) - 2) :
-                print int(round(float(line[i]))),
+        elif ( k == len(line) - 2) :
+                print int(round(float(line[k]))),
                 print ' ',
-                print int(round(float(line[i+1]))),
+                print int(round(float(line[k+1]))),
                 print ' ',
                 print int(round(float(line[1]))),
                 print ' ',
                 print int(round(float(line[2])))
 
-                file.write(str(int(round(float(line[i]))),))
+                file.write(str(int(round(float(line[k]))),))
                 file.write( ' ',)
-                file.write(str(int(round(float(line[i+1]))),))
+                file.write(str(int(round(float(line[k+1]))),))
                 file.write( ' ',)
                 file.write(str(int(round(float(line[1]))),))
                 file.write( ' ',)
                 file.write(str(int(round(float(line[2])))))
                 file.write('\n')
-        if (i != 0 ) :
-            if (i % 2 == 1) :
-                if (maksx < float(line[i])) :
-                    maksx = float(line[i])
-                if (minx > float(line[i])) :
-                    minx = float(line[i])
+        if (k != 0 ) :
+            if (k % 2 == 1) :
+                if (maksx < float(line[k])) :
+                    maksx = float(line[k])
+                if (minx > float(line[k])) :
+                    minx = float(line[k])
             else :
-                if (maksy < float(line[i])) :
-                    maksy = float(line[i])
-                if (miny > float(line[i])) :
-                    miny = float(line[i])
+                if (maksy < float(line[k])) :
+                    maksy = float(line[k])
+                if (miny > float(line[k])) :
+                    miny = float(line[k])
 
 
     print int(round(minx)),
@@ -105,7 +105,6 @@ for i in range(len(path_strings)):
     print int(round(maksx)),
     print ' ',
     print int(round(maksy))
-    print '\n'
 
     #bottom right and top left Point
     file.write(str(int(round(minx)),))
@@ -116,6 +115,7 @@ for i in range(len(path_strings)):
     file.write( ' ',)
     file.write(str(int(round(maksy))))
     file.write('\n')
+    
 
     if (i > 1) :
         tempcolor = path_colors[i].replace('#','')
@@ -133,3 +133,4 @@ for i in range(len(path_strings)):
                 print a+a
                 file.write(str(int(a+a,16))+' ',)
     file.close()
+    print '\n'
