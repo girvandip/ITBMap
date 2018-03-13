@@ -130,5 +130,7 @@ int tugas1()
     free(Royyan);
     free(Icha);
 
+    clearScreen1();
+
     return 0;
 }

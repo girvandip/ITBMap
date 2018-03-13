@@ -144,6 +144,9 @@ int tugas6() {
         usleep(16); // sleep = 1000/fps
     }
 
+    Util::clearFrameBuffer(frameBufferArray);
+    Util::printScreen(frameBufferArray);
+
 
     return 0;
 }

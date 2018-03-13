@@ -136,6 +136,8 @@ int tugas2() {
 
     tcsetattr(0, TCSANOW, &initial_settings);
 
+    clearScreen2();
+
 	
 	return 0;
 }

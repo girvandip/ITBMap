@@ -109,10 +109,10 @@ int tugas5() {
                     usleep(1000);
                 }
         } 
-        usleep(16);
+        usleep(70);
     }
 
-    int height = 400;
+    int height = 100;
     if(hit) {
         while (j<=height) {
             Util::printScreen(frameBufferArray);
@@ -160,10 +160,14 @@ int tugas5() {
                 parachute.update(0,2);
                 usleep(1000);
             }
-            j++; u++;
+            j++; 
+            u++;
+            usleep(70);
         }
-        usleep(16);
     }
+
+    Util::clearFrameBuffer(frameBufferArray);
+    Util::printScreen(frameBufferArray);
     return 0;
 }
 

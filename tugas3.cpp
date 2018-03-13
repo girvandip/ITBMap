@@ -38,5 +38,8 @@ int tugas3() {
     printChar3('S', 800, 200, 255, 255, 255);
     printChar3('V', 900, 200, 255, 255, 255);
 
+    sleep(2);
+    clearScreen3();
+
 	return 0;
 }

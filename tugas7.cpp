@@ -103,6 +103,9 @@ void *getInput(void * threadid){
                 // p4.print(paintbuffer, 255, 255, 255);
             }
             
+            if(middle != 0){
+                break;
+            }
         }
         Util::mergeFrameBuffer(cursorbuffer, paintbuffer, framebuffer);
         Util::printScreen(framebuffer);
@@ -114,7 +117,10 @@ int tugas7()
     pthread_t mouse;
     pthread_create(&mouse, NULL, getInput, 0);
 
-    pthread_exit(NULL);
+    pthread_join(mouse, NULL);
+
+    Util::clearFrameBuffer(framebuffer);
+    Util::printScreen(framebuffer);
 
     return 0; 
 }
