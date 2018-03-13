@@ -109,7 +109,7 @@ void *getInput(void * threadid){
     }
 }
 
-int main(int argc, char** argv)
+int tugas7()
 {
     pthread_t mouse;
     pthread_create(&mouse, NULL, getInput, 0);

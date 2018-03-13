@@ -2,7 +2,7 @@
 #include "SClip.cpp"
 #include <iostream>
 #include "utils/util.cpp"
-#include "utils/UserInput.cpp"
+#include "utils/UserInput.h"
 
 using namespace std;
 
@@ -35,7 +35,7 @@ using namespace std;
 
 
 
-int main() {
+int tugas6() {
 
     // Mouse
     int mfd, bytes;

@@ -5,6 +5,13 @@
 #include <string>
 #include <unistd.h>
 
+#include "tugas6.cpp"
+#include "tugas7.cpp"
+#include "tugas5.cpp"
+#include "tugas1.cpp"
+#include "tugas2.cpp"
+#include "tugas3.cpp"
+
 using namespace std;
 
 #define SCREEN_MAIN 0
@@ -39,7 +46,22 @@ int Process() {
   if (LastKey == KEY_q) {
     Terminated = true;
   } else if(LastKey >= 49 && LastKey <= 55){
-    Terminated = true;
+    //Terminated = true;
+    if(LastKey == 55){
+      tugas7();
+    } else if(LastKey == 54){
+      tugas6();
+    } else if(LastKey == 53) {
+      tugas5();
+    } else if(LastKey == 52) {
+      tugas5();
+    } else if(LastKey == 51) {
+      tugas3();
+    } else if(LastKey == 50) {
+      tugas2();
+    } else if(LastKey == 49) {
+      tugas1();
+    }
   }
 }
 
