@@ -117,10 +117,19 @@ for i in range(len(path_strings)):
     file.write(str(int(round(maksy))))
     file.write('\n')
 
-    tempcolor = path_colors[i].replace('#','')
-    n = 2
-    colorlist = [tempcolor[i:i+n] for i in range(0, len(tempcolor), n)]
-    for a in colorlist :
-        print a
-        file.write(str(int(a,16))+' ',)
+    if (i > 1) :
+        tempcolor = path_colors[i].replace('#','')
+        if (len(tempcolor) == 6) :
+            n = 2
+            colorlist = [tempcolor[i:i+n] for i in range(0, len(tempcolor), n)]
+            for a in colorlist :
+                print a
+                file.write(str(int(a,16))+' ',)
+        elif (len(tempcolor) == 3) :
+            n = 1
+
+            colorlist = [tempcolor[i:i+n] for i in range(0, len(tempcolor), n)]
+            for a in colorlist :
+                print a+a
+                file.write(str(int(a+a,16))+' ',)
     file.close()
